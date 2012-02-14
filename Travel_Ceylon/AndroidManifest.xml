@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="travelceylon.client"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="15" />
+
+    <application
+		android:icon="@drawable/ic_launcher"
+        android:label="Travel Ceylon" >
+        <activity
+            android:name=".Travel_CeylonActivity"
+            android:label="Travel Ceylon" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SelectionActivity"
+            android:label="Travel Ceylon Selection" >
+        </activity>
+        <activity
+            android:name=".Important_place_addActivity"
+            android:label="Add Importatn place to Travel Ceylon" >
+        </activity>
+    </application>
+
+</manifest>

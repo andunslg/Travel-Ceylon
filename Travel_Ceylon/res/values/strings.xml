@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, Travel_CeylonActivity!</string>
+    <string name="app_name">Travel_Ceylon</string>
+    <string name="categories">Choose a Category</string>
+
+    <string-array name="category_array">
+        <item>History</item>
+        <item>Technology</item>
+        <item>Nature</item>
+        <item>Religon -Buddhisum</item>
+        <item>Rilegon -Hindu</item>
+        <item>Religon -Catholic</item>
+        <item>Religon -Islam</item>
+        <item>Lesuire</item>
+    </string-array>
+
+</resources>
