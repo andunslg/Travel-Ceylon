@@ -4,36 +4,26 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="47dp"
+        android:src="@drawable/sl" />
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="47dp"
-            android:src="@drawable/sl" />
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Plan A Travel" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/imageView1"
-            android:layout_marginLeft="64dp"
-            android:text="Submit Details" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/button3"
-            android:layout_below="@+id/button3"
-            android:text="Plan A Travel" />
-
-    </RelativeLayout>
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Submit Details" />
 
 </LinearLayout>
