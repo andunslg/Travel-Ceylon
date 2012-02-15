@@ -19,6 +19,13 @@ public class SelectionActivity extends Activity {
 	           startActivity(i);
 	           }
 	        });
+	        Button b1 = (Button) findViewById(R.id.button2);
+	        b1.setOnClickListener(new View.OnClickListener() {
+	           public void onClick(View arg0) {
+	           Intent i = new Intent(SelectionActivity.this, Plan_a_trip_Guide.class);
+	           startActivity(i);
+	           }
+	        });
 	   }
 }
 
