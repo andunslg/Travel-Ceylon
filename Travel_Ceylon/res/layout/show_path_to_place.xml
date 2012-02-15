@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+     <TextView
+        android:id="@+id/textViewDescriptionofPathToPlace"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.maps.MapView
+        android:id="@+id/mapviewShowPathToPlace"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.37"
+        android:apiKey="09b9oIFZohCW5VP3KCOr85-7mh7P1Su5CVBG7fg"
+        android:clickable="true" />
+
+</LinearLayout>
