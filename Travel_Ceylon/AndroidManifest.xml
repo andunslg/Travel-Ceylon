@@ -5,12 +5,13 @@
     android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="8" />
-
+	<uses-permission android:name="android.permission.INTERNET" />
     <application
 		android:icon="@drawable/ic_launcher"
         android:label="Travel Ceylon" >
+        <uses-library android:name="com.google.android.maps" />
         <activity
-            android:name=".Travel_CeylonActivity"
+            android:name=".Travel_Ceylon_Activity"
             android:label="Travel Ceylon" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,11 +20,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SelectionActivity"
+            android:name=".Selection_Activity"
             android:label="Travel Ceylon selection" >
         </activity>
         <activity
-            android:name=".Important_place_addActivity"
+            android:name=".Important_place_add_Activity"
             android:label="Add important place to Travel Ceylon" >
         </activity>
         <activity
@@ -33,6 +34,14 @@
          <activity
             android:name=".Add_travel_details"
             android:label="Add travel details" >
+        </activity>
+         <activity
+            android:name=".Show_Path_To_Place"
+            android:label="Show Path To Place" >
+        </activity>
+         <activity
+            android:name=".Show_Trip_Plan"
+            android:label="Show Trip Plan" >
         </activity>
     </application>
 

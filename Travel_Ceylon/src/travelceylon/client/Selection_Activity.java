@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 
-public class SelectionActivity extends Activity {
+public class Selection_Activity extends Activity {
 	 public void onCreate(Bundle icicle)
 	   {
 	      super.onCreate(icicle);
@@ -18,14 +18,14 @@ public class SelectionActivity extends Activity {
 	      Button b = (Button) findViewById(R.id.buttonSubmitPlaceDetails);
 	        b.setOnClickListener(new View.OnClickListener() {
 	           public void onClick(View arg0) {
-	           Intent i = new Intent(SelectionActivity.this, Important_place_addActivity.class);
+	           Intent i = new Intent(Selection_Activity.this, Important_place_add_Activity.class);
 	           startActivity(i);
 	           }
 	        });
 	        Button b1 = (Button) findViewById(R.id.buttonPlanATravel);
 	        b1.setOnClickListener(new View.OnClickListener() {
 	           public void onClick(View arg0) {
-	           Intent i = new Intent(SelectionActivity.this, Plan_a_trip_Guide.class);
+	           Intent i = new Intent(Selection_Activity.this, Plan_a_trip_Guide.class);
 	           startActivity(i);
 	           }
 	        });
