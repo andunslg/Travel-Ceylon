@@ -14,7 +14,7 @@
             android:layout_height="fill_parent" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/textViewI"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Please fill this form to submit important place details to Travel Ceylon."
@@ -41,7 +41,7 @@
             android:layout_height="fill_parent" >
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textViewPlaceName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Place Name"
@@ -56,10 +56,9 @@
             android:layout_height="fill_parent" >
 
             <EditText
-                android:id="@+id/editText1"
+                android:id="@+id/editTextPlaceName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#ff006600" >
+                android:layout_height="wrap_content" >
 
                 <requestFocus />
             </EditText>
@@ -83,7 +82,7 @@
             android:layout_height="fill_parent" >
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/textViewCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Category - Any place can be a memeber of at most three categories"
@@ -110,10 +109,9 @@
             android:layout_height="fill_parent" >
 
             <Spinner
-                android:id="@+id/spinner1"
+                android:id="@+id/spinnerCategory1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#ff006600"
                 android:prompt="@string/categories" />
         </TableRow>
 
@@ -135,10 +133,9 @@
             android:layout_height="fill_parent" >
 
             <Spinner
-                android:id="@+id/spinner2"
+                android:id="@+id/spinnerCategory2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#ffff9900"
                 android:prompt="@string/categories" />
         </TableRow>
 
@@ -160,10 +157,9 @@
             android:layout_height="fill_parent" >
 
             <Spinner
-                android:id="@+id/spinner3"
+                android:id="@+id/spinnerCategory3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#ff006600"
                 android:prompt="@string/categories" />
         </TableRow>
 
@@ -185,7 +181,7 @@
             android:layout_height="fill_parent" >
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/textViewDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Description"
@@ -198,10 +194,9 @@
             android:layout_height="fill_parent" >
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/editTextDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#ff006600"
                 android:inputType="textMultiLine" />
         </TableRow>
 
@@ -223,7 +218,7 @@
             android:layout_height="fill_parent" >
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/textViewLongditude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Longditude"
@@ -236,10 +231,9 @@
             android:layout_height="fill_parent" >
 
             <EditText
-                android:id="@+id/editText3"
+                android:id="@+id/editTextLongditude"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#ff006600" >
+                android:layout_height="wrap_content" >
 
                 <requestFocus />
             </EditText>
@@ -263,7 +257,7 @@
             android:layout_height="fill_parent" >
 
             <TextView
-                android:id="@+id/textView11"
+                android:id="@+id/textViewLatitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Latitude"
@@ -276,10 +270,9 @@
             android:layout_height="fill_parent" >
 
             <EditText
-                android:id="@+id/editText4"
+                android:id="@+id/editTextLatitude"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#ff006600" >
+                android:layout_height="wrap_content" >
 
                 <requestFocus />
             </EditText>
@@ -303,7 +296,7 @@
             android:layout_height="fill_parent" >
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/textViewClosetotheCity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Close to the City"
@@ -316,10 +309,9 @@
             android:layout_height="fill_parent" >
 
             <EditText
-                android:id="@+id/editText5"
+                android:id="@+id/editTextClosetotheCity"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#ff006600" >
+                android:layout_height="wrap_content" >
 
                 <requestFocus />
             </EditText>
@@ -343,7 +335,7 @@
             android:layout_height="fill_parent" >
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/buttonSubmitData"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:text="Submit Data" />

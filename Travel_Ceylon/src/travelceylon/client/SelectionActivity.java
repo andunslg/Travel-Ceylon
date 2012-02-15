@@ -12,14 +12,14 @@ public class SelectionActivity extends Activity {
 	   {
 	      super.onCreate(icicle);
 	      setContentView(R.layout.selection_screen);
-	      Button b = (Button) findViewById(R.id.button3);
+	      Button b = (Button) findViewById(R.id.buttonSubmitPlaceDetails);
 	        b.setOnClickListener(new View.OnClickListener() {
 	           public void onClick(View arg0) {
 	           Intent i = new Intent(SelectionActivity.this, Important_place_addActivity.class);
 	           startActivity(i);
 	           }
 	        });
-	        Button b1 = (Button) findViewById(R.id.button2);
+	        Button b1 = (Button) findViewById(R.id.buttonPlanATravel);
 	        b1.setOnClickListener(new View.OnClickListener() {
 	           public void onClick(View arg0) {
 	           Intent i = new Intent(SelectionActivity.this, Plan_a_trip_Guide.class);

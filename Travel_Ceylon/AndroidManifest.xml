@@ -20,15 +20,19 @@
         </activity>
         <activity
             android:name=".SelectionActivity"
-            android:label="Travel Ceylon Selection" >
+            android:label="Travel Ceylon selection" >
         </activity>
         <activity
             android:name=".Important_place_addActivity"
-            android:label="Add Importatn place to Travel Ceylon" >
+            android:label="Add important place to Travel Ceylon" >
         </activity>
         <activity
             android:name=".Plan_a_trip_Guide"
             android:label="Plan a trip Guide" >
+        </activity>
+         <activity
+            android:name=".Add_travel_details"
+            android:label="Add travel details" >
         </activity>
     </application>
 
