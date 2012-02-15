@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 public class SelectionActivity extends Activity {
@@ -12,6 +13,8 @@ public class SelectionActivity extends Activity {
 	   {
 	      super.onCreate(icicle);
 	      setContentView(R.layout.selection_screen);
+	     
+
 	      Button b = (Button) findViewById(R.id.buttonSubmitPlaceDetails);
 	        b.setOnClickListener(new View.OnClickListener() {
 	           public void onClick(View arg0) {

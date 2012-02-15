@@ -17,6 +17,7 @@ public class Travel_CeylonActivity extends Activity {
         b.setOnClickListener(new View.OnClickListener() {
            public void onClick(View arg0) {
            Intent i = new Intent(Travel_CeylonActivity.this, SelectionActivity.class);
+           i.putExtra("name","Andun");
            startActivity(i);
            }
         });
