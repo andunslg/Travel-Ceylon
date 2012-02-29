@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapController;
@@ -16,9 +17,11 @@ public class MapOverlay extends com.google.android.maps.Overlay {
 	ArrayList<GeoPoint> mPoints;
 
 	public MapOverlay(Road road, MapView mv) {
+		Log.d("mpoints",road.toString());
 		mRoad = road;
 		if (road.mRoute.length > 0) {
 			mPoints = new ArrayList<GeoPoint>();
+			Log.d("mpoints", mPoints.toString());
 			for (int i = 0; i < road.mRoute.length; i++) {
 				mPoints.add(new GeoPoint((int) (road.mRoute[i][1] * 1000000),
 						(int) (road.mRoute[i][0] * 1000000)));

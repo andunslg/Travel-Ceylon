@@ -264,6 +264,12 @@ public class Add_travel_details extends Activity {
 						androidHttpTransport.call(SOAP_ACTION, envelope);
 						Object result = envelope.getResponse();
 						Log.d("Done",result.toString());
+						Intent i = new Intent(Add_travel_details.this,
+								Show_Trip_Plan.class);
+						Bundle bundle = new Bundle();
+					    bundle.putString("TripPlan", result.toString());
+					    i.putExtras(bundle);
+					    startActivity(i);
 
 					} catch (Exception E) {
 						E.printStackTrace();
@@ -271,13 +277,7 @@ public class Add_travel_details extends Activity {
 
 					}
 					
-				}
-				
-
-				
-				Intent i = new Intent(Add_travel_details.this,
-				Show_Trip_Plan.class);
-				startActivity(i);
+				}				
 
 			}
 		});
