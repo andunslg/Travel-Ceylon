@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -43,6 +44,20 @@ public class Show_Path_To_Place extends MapActivity {
 	MapView mapView;
 	private Road mRoad;
 	Show_Path_To_Place spt;
+	Bundle params ;
+
+	public boolean onKeyDown(int keyCode, KeyEvent event){
+	    if(keyCode == KeyEvent.KEYCODE_BACK) {
+	            Intent i = new Intent(this, Show_Trip_Plan.class);   
+	            Bundle bundle = new Bundle();
+				bundle.putString("TripPlan",this.params.getString("TripPlan"));
+				i.putExtras(bundle);
+	            startActivity(i);          
+	            finish();
+	            return true;
+	    }
+	    return false;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +66,7 @@ public class Show_Path_To_Place extends MapActivity {
 		spt = this;
 		mapView = (MapView) findViewById(R.id.mapviewShowPathToPlace);
 		mapView.setBuiltInZoomControls(true);
-		final Bundle params = getIntent().getExtras();
+		params = getIntent().getExtras();
 		new Thread() {
 			@Override
 			public void run() {

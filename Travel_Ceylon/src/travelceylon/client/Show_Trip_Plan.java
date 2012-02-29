@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+
 import route.*;
 
 import android.app.AlertDialog;
@@ -21,6 +22,9 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Bitmap.Config;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -48,32 +52,63 @@ public class Show_Trip_Plan extends MapActivity {
 	ArrayList<City> cityArray;
 	ArrayList<Important_Place> placeArray;
 	boolean streetview;
+	private LocationManager locationManager;
+	boolean currentUpdated;
+	String tripPathDes;
+	Bundle params;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.show_trip_plan);
+
 		Log.d("Startin City", "Starts");
-		streetview=true;
+		streetview = true;
 		stp = this;
+		currentUpdated = false;
+		tripPathDes = "";
 
-		final Button b = (Button) findViewById(R.id.buttonChagngeView);
-		b.setOnClickListener(new View.OnClickListener() {
+		params = getIntent().getExtras();
+		String tripPlan = params.getString("TripPlan");
+		String cities[] = tripPlan.split(";");
+
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+				0, new GeoUpdateHandler());
+
+		final Button buttonChagngeView = (Button) findViewById(R.id.buttonChagngeView);
+		buttonChagngeView.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
-				if(!streetview){
+				if (!streetview) {
 					mapView.setStreetView(true);
-					streetview=true;
-					b.setText("Change to satelite view");
+					streetview = true;
+					buttonChagngeView.setText("Change to satelite view");
+					mapView.invalidate();
+
+				} else {
+					mapView.setStreetView(true);
+					streetview = false;
+					buttonChagngeView.setText("Change to street view");
 					mapView.invalidate();
 
 				}
-				else{
-					mapView.setStreetView(true);
-					streetview=false;
-					b.setText("Change to street view");
-					mapView.invalidate();
+			}
+		});
 
-				}
+		final Button buttonShowTripPathDes = (Button) findViewById(R.id.buttonShowTripPathDes);
+		buttonShowTripPathDes.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View arg0) {
+				AlertDialog.Builder dialog = new AlertDialog.Builder(stp);
+				dialog.setTitle("Your Trip Path Des");
+				dialog.setMessage(tripPathDes);
+				dialog.setIcon(R.drawable.icon1);
+				dialog.setNeutralButton("Ok",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface arg0, int arg1) {
+							}
+						});
+
+				dialog.show();
 			}
 		});
 
@@ -81,11 +116,6 @@ public class Show_Trip_Plan extends MapActivity {
 		mapView.setBuiltInZoomControls(true);
 		cityArray = new ArrayList<City>();
 		placeArray = new ArrayList<Important_Place>();
-
-
-		Bundle params = getIntent().getExtras();
-		String tripPlan = params.getString("TripPlan");
-		String cities[] = tripPlan.split(";");
 
 		for (int i = 0; i < cities.length; i++) {
 			Log.d("City", cities[i]);
@@ -116,7 +146,6 @@ public class Show_Trip_Plan extends MapActivity {
 			}
 		}
 
-
 		for (int i = 0; i < cityArray.size(); i++) {
 			Drawable marker = getResources().getDrawable(R.drawable.marker);
 			int markerWidth = marker.getIntrinsicWidth();
@@ -126,7 +155,7 @@ public class Show_Trip_Plan extends MapActivity {
 			MyOverlay myItemizedOverlay = new MyOverlay(marker);
 			myItemizedOverlay.context = this;
 			myItemizedOverlay.isCity = true;
-			myItemizedOverlay.myNum=i;
+			myItemizedOverlay.myNum = i;
 			mapView.getOverlays().add(myItemizedOverlay);
 			myItemizedOverlay.addItem(cityArray.get(i).city,
 					cityArray.get(i).City_Name,
@@ -142,7 +171,7 @@ public class Show_Trip_Plan extends MapActivity {
 
 			MyOverlay myItemizedOverlay = new MyOverlay(marker);
 			myItemizedOverlay.context = this;
-			myItemizedOverlay.myNum=i;
+			myItemizedOverlay.myNum = i;
 			mapView.getOverlays().add(myItemizedOverlay);
 			myItemizedOverlay.addItem(
 					placeArray.get(i).imp,
@@ -179,8 +208,10 @@ public class Show_Trip_Plan extends MapActivity {
 
 	Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			TextView textView = (TextView) findViewById(R.id.textViewDescriptionofTrip);
-			textView.setText(mRoad.mName + " " + mRoad.mDescription);
+			// TextView textView = (TextView)
+			// findViewById(R.id.textViewDescriptionofTrip);
+			tripPathDes += mRoad.mName + " " + mRoad.mDescription + "\n";
+			// textView.setText(mRoad.mName + " " + mRoad.mDescription);
 			MapOverlay mapOverlay = new MapOverlay(mRoad, mapView);
 			List<Overlay> listOfOverlays = mapView.getOverlays();
 			// listOfOverlays.clear();
@@ -269,18 +300,28 @@ public class Show_Trip_Plan extends MapActivity {
 							public void onClick(DialogInterface arg0, int arg1) {
 								Intent i = new Intent(Show_Trip_Plan.this,
 										Show_Path_To_Place.class);
-								startActivity(i);
 								Bundle bundle = new Bundle();
-							    bundle.putString("fromLat",placeArray.get(myNum).closeTo.Latitude);
-							    bundle.putString("fromLng", placeArray.get(myNum).closeTo.Longitude);
-							    bundle.putString("toLat", placeArray.get(myNum).Latitude);
-							    bundle.putString("toLng", placeArray.get(myNum).Longitude);
-							    bundle.putString("cityName", placeArray.get(myNum).closeTo.City_Name);
-							    bundle.putString("placeName", placeArray.get(myNum).Place_Name);
-							    bundle.putString("des", placeArray.get(myNum).Description);
-							    bundle.putString("cat", placeArray.get(myNum).Category);
-							    i.putExtras(bundle);
-							    startActivity(i);
+								bundle.putString("fromLat",
+										placeArray.get(myNum).closeTo.Latitude);
+								bundle.putString("fromLng",
+										placeArray.get(myNum).closeTo.Longitude);
+								bundle.putString("toLat",
+										placeArray.get(myNum).Latitude);
+								bundle.putString("toLng",
+										placeArray.get(myNum).Longitude);
+								bundle.putString("cityName",
+										placeArray.get(myNum).closeTo.City_Name);
+								bundle.putString("placeName",
+										placeArray.get(myNum).Place_Name);
+								bundle.putString("des",
+										placeArray.get(myNum).Description);
+								bundle.putString("cat",
+										placeArray.get(myNum).Category);
+								bundle.putString("TripPlan",
+										stp.params.getString("TripPlan"));
+								i.putExtras(bundle);
+
+								startActivity(i);
 							}
 						});
 				dialog.setNegativeButton("Go Back",
@@ -295,5 +336,85 @@ public class Show_Trip_Plan extends MapActivity {
 
 		}
 
+	}
+
+	public class GeoUpdateHandler implements LocationListener {
+		double currentLat;
+		double currentLng;
+
+		@Override
+		public void onLocationChanged(Location location) {
+			currentLat = location.getLatitude();
+			currentLng = location.getLongitude();
+			for (int i = 0; i < cityArray.size(); i++) {
+				final City temp = cityArray.get(i);
+				if (((Double.parseDouble(temp.Latitude) - currentLat) >= -0.0900)
+						&& ((Double.parseDouble(temp.Latitude) - currentLat) <= 0.0900)) {
+					if (((Double.parseDouble(temp.Longitude) - currentLng) >= -0.0900)
+							&& ((Double.parseDouble(temp.Longitude) - currentLng)) <= 0.0900) {
+						AlertDialog.Builder dialog = new AlertDialog.Builder(
+								stp);
+						dialog.setTitle("Your are close to " + temp.City_Name);
+						dialog.setMessage("Please check the map to see what are places in the trip plan");
+						dialog.setIcon(R.drawable.icon1);
+						dialog.setNeutralButton("Ok",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface arg0,
+											int arg1) {
+
+										GeoPoint point = new GeoPoint(
+												(int) (Double
+														.parseDouble(temp.Latitude) * 1E6),
+												(int) (Double
+														.parseDouble(temp.Longitude) * 1E6));
+										MapController mapController = mapView
+												.getController();
+										mapController.setZoom(16);
+										mapController.animateTo(point); // mapController.setCenter(point);
+
+									}
+								});
+
+						dialog.show();
+
+					}
+
+				}
+			}
+
+			Drawable marker = getResources().getDrawable(R.drawable.marker2);
+			int markerWidth = marker.getIntrinsicWidth();
+			int markerHeight = marker.getIntrinsicHeight();
+			marker.setBounds(0, markerHeight, markerWidth, 0);
+
+			GeoPoint current = new GeoPoint(
+					(int) (location.getLatitude() * 1e6),
+					(int) (location.getLongitude() * 1e6));
+			MyOverlay myItemizedOverlay = new MyOverlay(marker);
+			myItemizedOverlay.context = stp;
+			myItemizedOverlay.isCity = true;
+			if (currentUpdated) {
+				mapView.getOverlays().remove(mapView.getOverlays().size() - 1);
+			}
+			currentUpdated = true;
+			mapView.getOverlays().add(myItemizedOverlay);
+			myItemizedOverlay.addItem(current, "Your Current Postion",
+					"Please watch the map Carfully");
+			mapView.invalidate();
+			MapController mapController = mapView.getController();
+			mapController.animateTo(current); // mapController.setCenter(point);
+		}
+
+		@Override
+		public void onProviderDisabled(String provider) {
+		}
+
+		@Override
+		public void onProviderEnabled(String provider) {
+		}
+
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+		}
 	}
 }
