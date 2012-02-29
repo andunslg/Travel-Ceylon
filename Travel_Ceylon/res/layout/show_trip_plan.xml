@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textViewDescriptionofTrip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+<!--     <TextView -->
+<!--         android:id="@+id/textViewDescriptionofTrip" -->
+<!--         android:layout_width="fill_parent" -->
+<!--         android:layout_height="wrap_content" /> -->
 
     <com.google.android.maps.MapView
         android:id="@+id/mapviewFullTrip"
@@ -17,10 +17,22 @@
         android:apiKey="09b9oIFZohCW5VP3KCOr85-7mh7P1Su5CVBG7fg"
         android:clickable="true" />
 
-    <Button
-        android:id="@+id/buttonChagngeView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Change to satelite view" />
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/buttonChagngeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change to satelite view" />
+
+        <Button
+            android:id="@+id/buttonShowTripPathDes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show Path Details" />
+    </LinearLayout>
 
 </LinearLayout>
