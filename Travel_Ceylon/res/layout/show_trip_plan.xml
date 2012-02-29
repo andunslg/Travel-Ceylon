@@ -18,9 +18,9 @@
         android:clickable="true" />
 
     <Button
-        android:id="@+id/buttonShowPathToPlace"
+        android:id="@+id/buttonChagngeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Show Path To Place" />
+        android:text="Change to satelite view" />
 
 </LinearLayout>
