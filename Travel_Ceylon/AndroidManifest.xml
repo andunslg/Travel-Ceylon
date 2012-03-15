@@ -34,8 +34,20 @@
             android:label="Plan a trip Guide" >
         </activity>
          <activity
-            android:name=".Add_travel_details"
+            android:name=".Add_travel_details_start"
             android:label="Add travel details" >
+        </activity>
+         <activity
+            android:name=".Add_travel_details_interest"
+            android:label="Add travel details_Interest" >
+        </activity>
+         <activity
+            android:name=".Add_travel_details_should_avoid"
+            android:label="Add travel details_Select_Shoul_Avoid" >
+        </activity>
+        <activity
+            android:name=".Add_travel_details_should_visit"
+            android:label="Add travel details_Select_Shoul_Visit" >
         </activity>
          <activity
             android:name=".Show_Path_To_Place"
@@ -45,6 +57,7 @@
             android:name=".Show_Trip_Plan"
             android:label="Show Trip Plan" >
         </activity>
+       
     </application>
 
 </manifest>

@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="From this option you can plan your travel on your own. To plan a travel you have to fill the forum given next. After filling that, Travel Ceylon will suggest you are travel plan."
+        android:text="Please fill the set of forms carefully, which appers next."
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     

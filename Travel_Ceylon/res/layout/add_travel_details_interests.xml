@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/TextViewInterests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please select your interests"
+        android:textSize="10pt" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/TextViewSpace"
+        android:layout_width="match_parent"
+        android:layout_height="10pt"
+        android:text=""
+        android:textSize="8pt"
+        wrap_content="" >
+    </TextView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <CheckBox
+                android:id="@+id/checkBox1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="CheckBoxs1" />
+
+            <CheckBox
+                android:id="@+id/checkBox3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="CheckBox3" />
+
+            <CheckBox
+                android:id="@+id/checkBox5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="CheckBox5" />
+
+            <CheckBox
+                android:id="@+id/checkBox7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="CheckBox7" />
+
+            <CheckBox
+                android:id="@+id/checkBox9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="CheckBox9" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <CheckBox
+                android:id="@+id/checkBox2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="CheckBox2" />
+
+            <CheckBox
+                android:id="@+id/checkBox4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="CheckBox4" />
+
+            <CheckBox
+                android:id="@+id/checkBox6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="CheckBox6" />
+
+            <CheckBox
+                android:id="@+id/checkBox8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="CheckBox8" />
+
+            <CheckBox
+                android:id="@+id/checkBox10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="CheckBox10" />
+        </LinearLayout>
+    </LinearLayout>
+<TextView
+        android:id="@+id/TextViewSpace1"
+        android:layout_width="match_parent"
+        android:layout_height="10pt"
+        android:text=""
+        android:textSize="8pt"
+        wrap_content="" >
+    </TextView>
+    <Button
+        android:id="@+id/ButtonGoToAdvancedOptions"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="sendFeedback"
+        android:text="Go To Advanced Options" />
+    <Button
+        android:id="@+id/ButtonSendTravelDetails"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="sendFeedback"
+        android:text="Send Travel Details" />
+
+</LinearLayout>

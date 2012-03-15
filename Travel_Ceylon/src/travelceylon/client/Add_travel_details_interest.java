@@ -12,16 +12,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 
-public class Add_travel_details extends Activity {
-	Add_travel_details atd;
+
+public class Add_travel_details_interest extends Activity {
+	Add_travel_details_interest atd;
+
+	String startCity = "";
+	String destCity = "";
+	String interests = "";
+	String duration = "";
+
+	Bundle params;
+
 	int catCount = 0;
 	CheckBox cb1;
 	CheckBox cb2;
@@ -33,6 +37,7 @@ public class Add_travel_details extends Activity {
 	CheckBox cb8;
 	CheckBox cb9;
 	CheckBox cb10;
+	CheckBox advOption;
 
 	private String METHOD_NAME = "";
 	// our webservice method name
@@ -46,31 +51,12 @@ public class Add_travel_details extends Activity {
 
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.add_travel_details);
-		atd=this;
-		METHOD_NAME = "getCityList";
-		try {
-			SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
-			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
-					SoapEnvelope.VER11);
-			envelope.dotNet = true;
-			envelope.setOutputSoapObject(request);
-			HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
-			androidHttpTransport.call(SOAP_ACTION, envelope);
-			Object result = envelope.getResponse();
-			String cities = result.toString();
-			String cityList[] = cities.split(";");
-			AutoCompleteTextView textView1 = (AutoCompleteTextView) findViewById(R.id.autocomplete_StartingCity);
-			AutoCompleteTextView textView2 = (AutoCompleteTextView) findViewById(R.id.autocomplete_DestinationCity);
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-					R.layout.list, cityList);
-			textView1.setAdapter(adapter);
-			textView2.setAdapter(adapter);
-
-		} catch (Exception E) {
-			E.printStackTrace();
-
-		}
+		setContentView(R.layout.add_travel_details_interests);
+		atd = this;
+		params = getIntent().getExtras();
+		startCity = params.getString("Start_City");
+		destCity = params.getString("Dest_City");
+		duration = params.getString("Due");
 
 		cb1 = (CheckBox) findViewById(R.id.checkBox1);
 		cb1.setVisibility(View.INVISIBLE);
@@ -104,10 +90,10 @@ public class Add_travel_details extends Activity {
 			androidHttpTransport.call(SOAP_ACTION, envelope);
 			Object result = envelope.getResponse();
 			String categories = result.toString();
-			Log.d("Categories",categories);
+			Log.d("Categories", categories);
 			String categoriesList[] = categories.split(";");
 			catCount = categoriesList.length;
-			Log.d("Cat Caount",Integer.toString(catCount));
+			Log.d("Cat Caount", Integer.toString(catCount));
 			if (catCount >= 1) {
 				cb1.setText(categoriesList[0]);
 				cb1.setVisibility(View.VISIBLE);
@@ -161,23 +147,17 @@ public class Add_travel_details extends Activity {
 			E.printStackTrace();
 
 		}
-		
-		
+		Button b1 = (Button) findViewById(R.id.ButtonGoToAdvancedOptions);
+		b1.setOnClickListener(new View.OnClickListener() {
 
-		Button b = (Button) findViewById(R.id.ButtonSendTravelDetails);
-		b.setOnClickListener(new View.OnClickListener() {
-			AutoCompleteTextView sCity=(AutoCompleteTextView) findViewById(R.id.autocomplete_StartingCity);
-			AutoCompleteTextView dCity=(AutoCompleteTextView) findViewById(R.id.autocomplete_DestinationCity);
-			EditText du=(EditText) findViewById(R.id.EditTextDuration);
-			String startCity="";
-			String destCity="";
-			String interests="";
-			String duration="";
 			public void onClick(View arg0) {
-				Log.d("Cliked","Clicked");
-				if(sCity.getText().toString().equals("")||dCity.getText().toString().equals("")||du.getText().toString().equals("")||(!cb1.isChecked()&&!cb2.isChecked()&&!cb3.isChecked()&&!cb4.isChecked()&&!cb5.isChecked()&&!cb6.isChecked()&&!cb7.isChecked()&&!cb8.isChecked()&&!cb9.isChecked()&&!cb10.isChecked())){
+				if ((!cb1.isChecked() && !cb2.isChecked() && !cb3.isChecked()
+						&& !cb4.isChecked() && !cb5.isChecked()
+						&& !cb6.isChecked() && !cb7.isChecked()
+						&& !cb8.isChecked() && !cb9.isChecked() && !cb10
+						.isChecked())) {
 					AlertDialog.Builder alertbox = new AlertDialog.Builder(atd);
-					alertbox.setMessage("Please fill all the fields before submit");
+					alertbox.setMessage("Please tick at least one Interest");
 					alertbox.setNeutralButton("Ok",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface arg0,
@@ -185,102 +165,209 @@ public class Add_travel_details extends Activity {
 								}
 							});
 					alertbox.show();
-				}
-				else{
-					startCity=sCity.getText().toString();
-					destCity=dCity.getText().toString();
-					duration=du.getText().toString();
+				} else {
+					interests="";
 					if (catCount >= 1) {
-						if(cb1.isChecked()){
-							interests+=cb1.getText()+";";
+						if (cb1.isChecked()) {
+							interests += cb1.getText() + ";";
 						}
 					}
 					if (catCount >= 2) {
-						if(cb2.isChecked()){
-							interests+=cb2.getText()+";";
+						if (cb2.isChecked()) {
+							interests += cb2.getText() + ";";
 						}
 					}
 
 					if (catCount >= 3) {
-						if(cb3.isChecked()){
-							interests+=cb3.getText()+";";
+						if (cb3.isChecked()) {
+							interests += cb3.getText() + ";";
 						}
 					}
 
 					if (catCount >= 4) {
-						if(cb4.isChecked()){
-							interests+=cb4.getText()+";";
+						if (cb4.isChecked()) {
+							interests += cb4.getText() + ";";
 						}
 					}
 
 					if (catCount >= 5) {
-						if(cb5.isChecked()){
-							interests+=cb5.getText()+";";
+						if (cb5.isChecked()) {
+							interests += cb5.getText() + ";";
 						}
 					}
 
 					if (catCount >= 6) {
-						if(cb6.isChecked()){
-							interests+=cb6.getText()+";";
+						if (cb6.isChecked()) {
+							interests += cb6.getText() + ";";
 						}
 					}
 
 					if (catCount >= 7) {
-						if(cb7.isChecked()){
-							interests+=cb7.getText()+";";
+						if (cb7.isChecked()) {
+							interests += cb7.getText() + ";";
 						}
 					}
 
 					if (catCount >= 8) {
-						if(cb8.isChecked()){
-							interests+=cb8.getText()+";";
+						if (cb8.isChecked()) {
+							interests += cb8.getText() + ";";
 						}
 					}
 
 					if (catCount >= 9) {
-						if(cb9.isChecked()){
-							interests+=cb9.getText()+";";
+						if (cb9.isChecked()) {
+							interests += cb9.getText() + ";";
 						}
 					}
 
 					if (catCount >= 10) {
-						if(cb10.isChecked()){
-							interests+=cb10.getText()+";";
+						if (cb10.isChecked()) {
+							interests += cb10.getText() + ";";
 						}
 					}
-					
+					final Intent i = new Intent(Add_travel_details_interest.this,
+							Add_travel_details_should_visit.class);
+					Bundle bundle = params;
+					bundle.putString("Interests",interests);
+					i.putExtras(bundle);
+					AlertDialog.Builder alertbox = new AlertDialog.Builder(atd);
+					alertbox.setMessage("Your list of interest is "+interests+".Proceed further ?");
+					alertbox.setNeutralButton("Ok",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+									startActivity(i);
+								}
+							});
+					alertbox.setNegativeButton("Cancel",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface arg0,
+										int arg1) {						}
+							});
+					alertbox.show();
+
+				}
+
+			}
+		});
+		
+		Button b = (Button) findViewById(R.id.ButtonSendTravelDetails);
+		b.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View arg0) {
+
+				if ((!cb1.isChecked() && !cb2.isChecked() && !cb3.isChecked()
+						&& !cb4.isChecked() && !cb5.isChecked()
+						&& !cb6.isChecked() && !cb7.isChecked()
+						&& !cb8.isChecked() && !cb9.isChecked() && !cb10
+						.isChecked())) {
+					AlertDialog.Builder alertbox = new AlertDialog.Builder(atd);
+					alertbox.setMessage("Please tick at least one Interest");
+					alertbox.setNeutralButton("Ok",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+								}
+							});
+					alertbox.show();
+				} else {
+					if (catCount >= 1) {
+						if (cb1.isChecked()) {
+							interests += cb1.getText() + ";";
+						}
+					}
+					if (catCount >= 2) {
+						if (cb2.isChecked()) {
+							interests += cb2.getText() + ";";
+						}
+					}
+
+					if (catCount >= 3) {
+						if (cb3.isChecked()) {
+							interests += cb3.getText() + ";";
+						}
+					}
+
+					if (catCount >= 4) {
+						if (cb4.isChecked()) {
+							interests += cb4.getText() + ";";
+						}
+					}
+
+					if (catCount >= 5) {
+						if (cb5.isChecked()) {
+							interests += cb5.getText() + ";";
+						}
+					}
+
+					if (catCount >= 6) {
+						if (cb6.isChecked()) {
+							interests += cb6.getText() + ";";
+						}
+					}
+
+					if (catCount >= 7) {
+						if (cb7.isChecked()) {
+							interests += cb7.getText() + ";";
+						}
+					}
+
+					if (catCount >= 8) {
+						if (cb8.isChecked()) {
+							interests += cb8.getText() + ";";
+						}
+					}
+
+					if (catCount >= 9) {
+						if (cb9.isChecked()) {
+							interests += cb9.getText() + ";";
+						}
+					}
+
+					if (catCount >= 10) {
+						if (cb10.isChecked()) {
+							interests += cb10.getText() + ";";
+						}
+					}
+
 					METHOD_NAME = "planTheTrip";
 					try {
-						SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
-						request.addProperty("startC",startCity );
-						request.addProperty("desC",destCity );
-						request.addProperty("duration",duration );
-						request.addProperty("interests",interests);
+						SoapObject request = new SoapObject(NAMESPACE,
+								METHOD_NAME);
+						request.addProperty("startC", startCity);
+						request.addProperty("desC", destCity);
+						request.addProperty("duration", duration);
+						request.addProperty("interests", interests);
+						request.addProperty("shouldInclude", "");
+						request.addProperty("shouldAvoid", "");
 						SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 								SoapEnvelope.VER11);
 						envelope.dotNet = true;
 						envelope.setOutputSoapObject(request);
-						HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+						HttpTransportSE androidHttpTransport = new HttpTransportSE(
+								URL);
 						androidHttpTransport.call(SOAP_ACTION, envelope);
 						Object result = envelope.getResponse();
-						Log.d("Done",result.toString());
-						Intent i = new Intent(Add_travel_details.this,
+
+						Intent i = new Intent(
+								Add_travel_details_interest.this,
 								Show_Trip_Plan.class);
 						Bundle bundle = new Bundle();
-					    bundle.putString("TripPlan", result.toString());
-					    i.putExtras(bundle);
-					    startActivity(i);
+						bundle.putString("TripPlan", result.toString());
+						i.putExtras(bundle);
+						startActivity(i);
 
 					} catch (Exception E) {
 						E.printStackTrace();
-						Log.d("Error of SOAP",E.toString());
+						Log.d("Error of SOAP", E.toString());
 
 					}
-					
-				}				
+
+				}
 
 			}
 		});
 
 	}
+
 }

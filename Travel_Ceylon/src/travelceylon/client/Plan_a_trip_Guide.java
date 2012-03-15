@@ -14,7 +14,7 @@ public class Plan_a_trip_Guide  extends Activity  {
 	      Button b = (Button) findViewById(R.id.buttonPlantheTravel);
 	        b.setOnClickListener(new View.OnClickListener() {
 	           public void onClick(View arg0) {
-	           Intent i = new Intent(Plan_a_trip_Guide.this, Add_travel_details.class);
+	           Intent i = new Intent(Plan_a_trip_Guide.this, Add_travel_details_start.class);
 	           startActivity(i);
 	           }
 	        });

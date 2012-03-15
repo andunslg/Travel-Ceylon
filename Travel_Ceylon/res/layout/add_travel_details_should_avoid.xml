@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/TextViewShouldAvoid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please enter cities you want to avoid on the journey."
+        android:textSize="10pt" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/TextViewSpace4"
+        android:layout_width="match_parent"
+        android:layout_height="10pt"
+        android:text=""
+        android:textSize="8pt"
+        wrap_content="" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/textViewCity1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City 1" />
+
+    <AutoCompleteTextView
+        android:id="@+id/autocompleteSA1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp" />
+
+    <TextView
+        android:id="@+id/textViewCity2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City 2" />
+
+    <AutoCompleteTextView
+        android:id="@+id/autocompleteSA2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp" />
+
+    <TextView
+        android:id="@+id/textViewCity3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City 3" />
+
+    <AutoCompleteTextView
+        android:id="@+id/autocompleteSA3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp" />
+
+    <TextView
+        android:id="@+id/textViewCity4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City 4" />
+
+    <AutoCompleteTextView
+        android:id="@+id/autocompleteSA4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp" />
+
+    <TextView
+        android:id="@+id/textViewCity5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City5" />
+
+    <AutoCompleteTextView
+        android:id="@+id/autocompleteSA5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp" />
+
+    <TextView
+        android:id="@+id/TextViewSpace5"
+        android:layout_width="match_parent"
+        android:layout_height="10pt"
+        android:text=""
+        android:textSize="8pt"
+        wrap_content="" >
+    </TextView>
+
+    <Button
+        android:id="@+id/ButtonSendTravelDetails1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="sendFeedback"
+        android:text="Send Travel Details" />
+
+</LinearLayout>
