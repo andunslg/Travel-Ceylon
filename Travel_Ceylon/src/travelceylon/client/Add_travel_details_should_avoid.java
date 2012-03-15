@@ -56,6 +56,7 @@ public class Add_travel_details_should_avoid extends Activity {
 		startCity = params.getString("Start_City");
 		destCity = params.getString("Dest_City");
 		duration = params.getString("Due");
+		interests=params.getString("Interests");
 		shouldVisitCities=params.getString("Should_Visit_Cities");
 				
 		sa1 = (AutoCompleteTextView) findViewById(R.id.autocompleteSA1);
