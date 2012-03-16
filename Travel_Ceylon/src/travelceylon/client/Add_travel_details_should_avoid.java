@@ -1,5 +1,7 @@
 package travelceylon.client;
 
+import java.util.ArrayList;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 
 public class Add_travel_details_should_avoid extends Activity {
 	Add_travel_details_should_avoid atd;
+	ArrayList<String> cities;
 
 	AutoCompleteTextView sa1;
 	AutoCompleteTextView sa2;
@@ -56,9 +59,9 @@ public class Add_travel_details_should_avoid extends Activity {
 		startCity = params.getString("Start_City");
 		destCity = params.getString("Dest_City");
 		duration = params.getString("Due");
-		interests=params.getString("Interests");
-		shouldVisitCities=params.getString("Should_Visit_Cities");
-				
+		interests = params.getString("Interests");
+		shouldVisitCities = params.getString("Should_Visit_Cities");
+
 		sa1 = (AutoCompleteTextView) findViewById(R.id.autocompleteSA1);
 		sa2 = (AutoCompleteTextView) findViewById(R.id.autocompleteSA2);
 		sa3 = (AutoCompleteTextView) findViewById(R.id.autocompleteSA3);
@@ -75,8 +78,32 @@ public class Add_travel_details_should_avoid extends Activity {
 			HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
 			androidHttpTransport.call(SOAP_ACTION, envelope);
 			Object result = envelope.getResponse();
-			String cities = result.toString();
-			String cityList[] = cities.split(";");
+			String temp = result.toString();
+			String cityList[] = temp.split(";");
+
+			cities = new ArrayList<String>();
+			for (String c : cityList) {
+				cities.add(c);
+			}
+
+			String sCity = params.getString("Start_City");
+			String dCity = params.getString("Dest_City");
+
+			cities.remove(cities.indexOf(sCity));
+			cities.remove(cities.indexOf(dCity));
+			String[] svCities = params.getString("Should_Visit_Cities").split(
+					";");
+			for (String c : svCities) {
+				cities.remove(cities.indexOf(c));
+			}
+
+			cityList = new String[cities.size()];
+			int i = 0;
+			for (String c : cities) {
+				cityList[i] = c;
+				i++;
+			}
+
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 					R.layout.list, cityList);
 			sa1.setAdapter(adapter);
@@ -108,22 +135,41 @@ public class Add_travel_details_should_avoid extends Activity {
 								}
 							});
 					alertbox.show();
+				} else if ((!cities.contains(sa1.getText().toString()) && !sa1
+						.getText().toString().equals(""))
+						|| (!cities.contains(sa2.getText().toString()) && !sa2
+								.getText().toString().equals(""))
+						|| (!cities.contains(sa3.getText().toString()) && !sa3
+								.getText().toString().equals(""))
+						|| (!cities.contains(sa4.getText().toString()) && !sa4
+								.getText().toString().equals(""))
+						|| (!cities.contains(sa5.getText().toString()) && !sa5
+								.getText().toString().equals(""))) {
+					AlertDialog.Builder alertbox = new AlertDialog.Builder(atd);
+					alertbox.setMessage("Please choose a City Name sugessted.");
+					alertbox.setNeutralButton("Ok",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+								}
+							});
+					alertbox.show();
 				} else {
-					shouldAvoidCities="";
-					if(!sa1.getText().toString().equals("")){
-						shouldAvoidCities+=sa1.getText().toString()+";";
+					shouldAvoidCities = "";
+					if (!sa1.getText().toString().equals("")) {
+						shouldAvoidCities += sa1.getText().toString() + ";";
 					}
-					if(!sa2.getText().toString().equals("")){
-						shouldAvoidCities+=sa2.getText().toString()+";";
+					if (!sa2.getText().toString().equals("")) {
+						shouldAvoidCities += sa2.getText().toString() + ";";
 					}
-					if(!sa3.getText().toString().equals("")){
-						shouldAvoidCities+=sa3.getText().toString()+";";
+					if (!sa3.getText().toString().equals("")) {
+						shouldAvoidCities += sa3.getText().toString() + ";";
 					}
-					if(!sa4.getText().toString().equals("")){
-						shouldAvoidCities+=sa4.getText().toString()+";";
+					if (!sa4.getText().toString().equals("")) {
+						shouldAvoidCities += sa4.getText().toString() + ";";
 					}
-					if(!sa5.getText().toString().equals("")){
-						shouldAvoidCities+=sa5.getText().toString()+";";
+					if (!sa5.getText().toString().equals("")) {
+						shouldAvoidCities += sa5.getText().toString() + ";";
 					}
 
 					METHOD_NAME = "planTheTrip";

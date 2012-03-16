@@ -1,5 +1,7 @@
 package travelceylon.client;
 
+import java.util.ArrayList;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -23,7 +25,8 @@ import android.widget.TextView;
 public class Add_travel_details_start extends Activity {
 	Add_travel_details_start atd;
 	Intent i;
-	
+	ArrayList<String> cities;
+
 	private String METHOD_NAME = "";
 	// our webservice method name
 	private String NAMESPACE = "http://ws.travel_ceylon.web.org";
@@ -49,14 +52,20 @@ public class Add_travel_details_start extends Activity {
 			HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
 			androidHttpTransport.call(SOAP_ACTION, envelope);
 			Object result = envelope.getResponse();
-			String cities = result.toString();
-			String cityList[] = cities.split(";");
+			String temp = result.toString();
+			String cityList[] = temp.split(";");
+			
+			cities = new ArrayList<String>();
+			for (String c : cityList) {
+				cities.add(c);
+			}
+			
 			AutoCompleteTextView textView1 = (AutoCompleteTextView) findViewById(R.id.autocomplete_StartingCity);
 			AutoCompleteTextView textView2 = (AutoCompleteTextView) findViewById(R.id.autocomplete_DestinationCity);
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+			ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(this,
 					R.layout.list, cityList);
-			textView1.setAdapter(adapter);
-			textView2.setAdapter(adapter);
+			textView1.setAdapter(cityAdapter);
+			textView2.setAdapter(cityAdapter);
 
 		} catch (Exception E) {
 			E.printStackTrace();
@@ -86,20 +95,34 @@ public class Add_travel_details_start extends Activity {
 								}
 							});
 					alertbox.show();
-				} else {
+				} else if (!cities.contains(sCity.getText().toString())||!cities.contains(dCity.getText().toString())) {
+					AlertDialog.Builder alertbox = new AlertDialog.Builder(atd);
+					alertbox.setMessage("Please choose a City Name sugessted.");
+					alertbox.setNeutralButton("Ok",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+								}
+							});
+					alertbox.show();
+				}
+
+				else {
 					startCity = sCity.getText().toString();
 					destCity = dCity.getText().toString();
 					duration = du.getText().toString();
 
 					i = new Intent(Add_travel_details_start.this,
-						Add_travel_details_interest.class);
+							Add_travel_details_interest.class);
 					Bundle bundle = new Bundle();
 					bundle.putString("Start_City", startCity);
 					bundle.putString("Dest_City", destCity);
 					bundle.putString("Due", duration);
 					i.putExtras(bundle);
 					AlertDialog.Builder alertbox = new AlertDialog.Builder(atd);
-					alertbox.setMessage("You have selected "+startCity+" as your starting city and "+destCity+" as your destination city.Proceed further ?");
+					alertbox.setMessage("You have selected " + startCity
+							+ " as your starting city and " + destCity
+							+ " as your destination city.Proceed further ?");
 					alertbox.setNeutralButton("Ok",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface arg0,
@@ -110,10 +133,10 @@ public class Add_travel_details_start extends Activity {
 					alertbox.setNegativeButton("Cancel",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface arg0,
-										int arg1) {						}
+										int arg1) {
+								}
 							});
 					alertbox.show();
-					
 
 				}
 

@@ -231,7 +231,8 @@ public class Add_travel_details_interest extends Activity {
 					bundle.putString("Interests",interests);
 					i.putExtras(bundle);
 					AlertDialog.Builder alertbox = new AlertDialog.Builder(atd);
-					alertbox.setMessage("Your list of interest is "+interests+".Proceed further ?");
+					String tInt=interests.replace(";", " ");
+					alertbox.setMessage("Your list of interest is "+tInt+".Proceed further ?");
 					alertbox.setNeutralButton("Ok",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface arg0,

@@ -14,26 +14,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Bitmap.Config;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
@@ -44,27 +34,25 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
 public class Show_Trip_Plan extends MapActivity {
-	Show_Trip_Plan stp;
-	LinearLayout linearLayout;
-	MapView mapView;
+	private Show_Trip_Plan stp;
+	private MapView mapView;
 	private Road mRoad;
-	MapController mc;
-	ArrayList<City> cityArray;
-	ArrayList<Important_Place> placeArray;
-	boolean streetview;
+	private ArrayList<City> cityArray;
+	private ArrayList<Important_Place> placeArray;
+	private boolean streetview;
 	private LocationManager locationManager;
-	boolean currentUpdated;
-	String tripPathDes;
-	Bundle params;
+	private boolean currentUpdated;
+	private String tripPathDes;
+	private Bundle params;
+	private boolean[] cityAlertShown;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.show_trip_plan);
 
-		Log.d("Startin City", "Starts");
-		streetview = true;
 		stp = this;
+		streetview = true;
 		currentUpdated = false;
 		tripPathDes = "";
 
@@ -118,7 +106,6 @@ public class Show_Trip_Plan extends MapActivity {
 		placeArray = new ArrayList<Important_Place>();
 
 		for (int i = 0; i < cities.length; i++) {
-			Log.d("City", cities[i]);
 			String city = cities[i];
 			String cityDetails[] = city.split(":");
 			GeoPoint p = new GeoPoint(
@@ -130,11 +117,7 @@ public class Show_Trip_Plan extends MapActivity {
 			if (cityDetails.length > 3) {
 				String places[] = cityDetails[3].split("#");
 				for (int j = 0; j < places.length; j++) {
-					Log.d("Place Details", places[j]);
 					String implace[] = places[j].split("\\|");
-					Log.d("length", Integer.toString(implace[3].length()));
-					Log.d("lat", implace[3]);
-					Log.d("lng", implace[4]);
 					GeoPoint p1 = new GeoPoint(
 							(int) (Double.parseDouble(implace[3]) * 1E6),
 							(int) (Double.parseDouble(implace[4]) * 1E6));
@@ -203,18 +186,14 @@ public class Show_Trip_Plan extends MapActivity {
 
 			}
 		}.start();
-
+		cityAlertShown=new boolean[cityArray.size()];
 	}
 
 	Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			// TextView textView = (TextView)
-			// findViewById(R.id.textViewDescriptionofTrip);
 			tripPathDes += mRoad.mName + " " + mRoad.mDescription + "\n";
-			// textView.setText(mRoad.mName + " " + mRoad.mDescription);
 			MapOverlay mapOverlay = new MapOverlay(mRoad, mapView);
 			List<Overlay> listOfOverlays = mapView.getOverlays();
-			// listOfOverlays.clear();
 			listOfOverlays.add(mapOverlay);
 			mapView.invalidate();
 		};
@@ -240,7 +219,6 @@ public class Show_Trip_Plan extends MapActivity {
 
 	@Override
 	protected boolean isLocationDisplayed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -348,35 +326,38 @@ public class Show_Trip_Plan extends MapActivity {
 			currentLng = location.getLongitude();
 			for (int i = 0; i < cityArray.size(); i++) {
 				final City temp = cityArray.get(i);
-				if (((Double.parseDouble(temp.Latitude) - currentLat) >= -0.0900)
-						&& ((Double.parseDouble(temp.Latitude) - currentLat) <= 0.0900)) {
-					if (((Double.parseDouble(temp.Longitude) - currentLng) >= -0.0900)
-							&& ((Double.parseDouble(temp.Longitude) - currentLng)) <= 0.0900) {
-						AlertDialog.Builder dialog = new AlertDialog.Builder(
-								stp);
-						dialog.setTitle("Your are close to " + temp.City_Name);
-						dialog.setMessage("Please check the map to see what are places in the trip plan");
-						dialog.setIcon(R.drawable.icon1);
-						dialog.setNeutralButton("Ok",
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface arg0,
-											int arg1) {
+				if (((Double.parseDouble(temp.Latitude) - currentLat) >= -0.0400)
+						&& ((Double.parseDouble(temp.Latitude) - currentLat) <= 0.0400)) {
+					if (((Double.parseDouble(temp.Longitude) - currentLng) >= -0.0400)
+							&& ((Double.parseDouble(temp.Longitude) - currentLng)) <= 0.0400) {
+						if (!cityAlertShown[i]) {
+							cityAlertShown[i]=true;
+							AlertDialog.Builder dialog = new AlertDialog.Builder(
+									stp);
+							dialog.setTitle("Your are close to "
+									+ temp.City_Name);
+							dialog.setMessage("Please check the map to see what are places in the trip plan");
+							dialog.setIcon(R.drawable.icon1);
+							dialog.setNeutralButton("Ok",
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface arg0, int arg1) {
 
-										GeoPoint point = new GeoPoint(
-												(int) (Double
-														.parseDouble(temp.Latitude) * 1E6),
-												(int) (Double
-														.parseDouble(temp.Longitude) * 1E6));
-										MapController mapController = mapView
-												.getController();
-										mapController.setZoom(16);
-										mapController.animateTo(point); // mapController.setCenter(point);
+											GeoPoint point = new GeoPoint(
+													(int) (Double
+															.parseDouble(temp.Latitude) * 1E6),
+													(int) (Double
+															.parseDouble(temp.Longitude) * 1E6));
+											MapController mapController = mapView
+													.getController();
+											mapController.setZoom(16);
+											mapController.animateTo(point);
 
-									}
-								});
+										}
+									});
 
-						dialog.show();
-
+							dialog.show();
+						}
 					}
 
 				}
@@ -402,7 +383,7 @@ public class Show_Trip_Plan extends MapActivity {
 					"Please watch the map Carfully");
 			mapView.invalidate();
 			MapController mapController = mapView.getController();
-			mapController.animateTo(current); // mapController.setCenter(point);
+			mapController.animateTo(current);
 		}
 
 		@Override
