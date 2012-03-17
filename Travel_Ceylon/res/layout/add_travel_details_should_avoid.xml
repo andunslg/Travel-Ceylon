@@ -91,7 +91,7 @@
     </TextView>
 
     <Button
-        android:id="@+id/ButtonSendTravelDetails1"
+        android:id="@+id/ButtonSendTravelDetailsWithSVCandSAC"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:onClick="sendFeedback"

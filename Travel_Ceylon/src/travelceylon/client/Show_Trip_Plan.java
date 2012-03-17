@@ -45,6 +45,7 @@ public class Show_Trip_Plan extends MapActivity {
 	private String tripPathDes;
 	private Bundle params;
 	private boolean[] cityAlertShown;
+	private int currentCity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -87,7 +88,7 @@ public class Show_Trip_Plan extends MapActivity {
 		buttonShowTripPathDes.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
 				AlertDialog.Builder dialog = new AlertDialog.Builder(stp);
-				dialog.setTitle("Your Trip Path Des");
+				dialog.setTitle("Your Trip Path Is This, ");
 				dialog.setMessage(tripPathDes);
 				dialog.setIcon(R.drawable.icon1);
 				dialog.setNeutralButton("Ok",
@@ -181,6 +182,7 @@ public class Show_Trip_Plan extends MapActivity {
 							tolon);
 					InputStream is = getConnection(url);
 					mRoad = RoadProvider.getRoute(is);
+					currentCity=i;
 					mHandler.sendEmptyMessage(0);
 				}
 
@@ -191,7 +193,7 @@ public class Show_Trip_Plan extends MapActivity {
 
 	Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			tripPathDes += mRoad.mName + " " + mRoad.mDescription + "\n";
+			tripPathDes += "Follow this road to go to "+cityArray.get(currentCity+1).City_Name+" from "+cityArray.get(currentCity).City_Name+".\n "+mRoad.mName + " " + mRoad.mDescription + "\n\n";
 			MapOverlay mapOverlay = new MapOverlay(mRoad, mapView);
 			List<Overlay> listOfOverlays = mapView.getOverlays();
 			listOfOverlays.add(mapOverlay);

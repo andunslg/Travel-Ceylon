@@ -117,7 +117,7 @@ public class Add_travel_details_should_avoid extends Activity {
 
 		}
 
-		Button b = (Button) findViewById(R.id.ButtonSendTravelDetails1);
+		Button b = (Button) findViewById(R.id.ButtonSendTravelDetailsWithSVCandSAC);
 		b.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View arg0) {
