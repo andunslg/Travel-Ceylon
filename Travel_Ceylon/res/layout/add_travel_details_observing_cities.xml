@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,15 +10,15 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/TextViewShouldAvoid"
+            android:id="@+id/TextViewOnlyWatchPlaces"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Please enter cities you want to avoid on the journey."
+            android:text="Please enter cities you want to see places. Other Cities will be ingonred as just passing cities."
             android:textSize="10pt" >
         </TextView>
 
         <TextView
-            android:id="@+id/TextViewSpace4"
+            android:id="@+id/TextViewSpace2"
             android:layout_width="match_parent"
             android:layout_height="10pt"
             android:text=""
@@ -33,7 +33,7 @@
             android:text="City 1" />
 
         <AutoCompleteTextView
-            android:id="@+id/autocompleteSA1"
+            android:id="@+id/autocompleteOC1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp" />
@@ -45,7 +45,7 @@
             android:text="City 2" />
 
         <AutoCompleteTextView
-            android:id="@+id/autocompleteSA2"
+            android:id="@+id/autocompleteOC2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp" />
@@ -57,7 +57,7 @@
             android:text="City 3" />
 
         <AutoCompleteTextView
-            android:id="@+id/autocompleteSA3"
+            android:id="@+id/autocompleteOC3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp" />
@@ -69,7 +69,7 @@
             android:text="City 4" />
 
         <AutoCompleteTextView
-            android:id="@+id/autocompleteSA4"
+            android:id="@+id/autocompleteOC4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp" />
@@ -78,16 +78,16 @@
             android:id="@+id/textViewCity5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="City5" />
+            android:text="City 5" />
 
         <AutoCompleteTextView
-            android:id="@+id/autocompleteSA5"
+            android:id="@+id/autocompleteOC5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp" />
 
         <TextView
-            android:id="@+id/TextViewSpace5"
+            android:id="@+id/TextViewSpace3"
             android:layout_width="match_parent"
             android:layout_height="10pt"
             android:text=""
@@ -96,18 +96,12 @@
         </TextView>
 
         <Button
-            android:id="@+id/buttonGoToObserving"
-            android:layout_width="fill_parent"
+            android:id="@+id/ButtonSendTavelDetailsWithOC"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Go To Select Observing Cities" />
-
-        <Button
-            android:id="@+id/ButtonSendTravelDetailsWithSVCandSAC"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:onClick="sendFeedback"
             android:text="Send Travel Details" />
-
+       
     </LinearLayout>
+    
 
 </ScrollView>

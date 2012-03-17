@@ -259,6 +259,7 @@ public class Add_travel_details_should_visit extends Activity {
 						request.addProperty("interests", interests);
 						request.addProperty("shouldInclude", shouldVisitCities);
 						request.addProperty("shouldAvoid", "");
+						request.addProperty("observing", "");
 						SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 								SoapEnvelope.VER11);
 						envelope.dotNet = true;

@@ -341,6 +341,7 @@ public class Add_travel_details_interest extends Activity {
 						request.addProperty("interests", interests);
 						request.addProperty("shouldInclude", "");
 						request.addProperty("shouldAvoid", "");
+						request.addProperty("observing", "");
 						SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 								SoapEnvelope.VER11);
 						envelope.dotNet = true;

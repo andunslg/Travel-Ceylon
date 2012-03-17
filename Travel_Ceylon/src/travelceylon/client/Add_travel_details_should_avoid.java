@@ -182,6 +182,7 @@ public class Add_travel_details_should_avoid extends Activity {
 						request.addProperty("interests", interests);
 						request.addProperty("shouldInclude", shouldVisitCities);
 						request.addProperty("shouldAvoid", shouldAvoidCities);
+						request.addProperty("observing", "");
 						SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 								SoapEnvelope.VER11);
 						envelope.dotNet = true;
@@ -205,6 +206,91 @@ public class Add_travel_details_should_avoid extends Activity {
 
 					}
 
+				}
+
+			}
+		});
+		
+		Button b1 = (Button) findViewById(R.id.buttonGoToObserving);
+		b1.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View arg0) {
+
+				if (sa1.getText().toString().equals("")
+						&& sa2.getText().toString().equals("")
+						&& sa3.getText().toString().equals("")
+						&& sa4.getText().toString().equals("")
+						&& sa5.getText().toString().equals("")) {
+					AlertDialog.Builder alertbox = new AlertDialog.Builder(atd);
+					alertbox.setMessage("Please fill at least one field before submit");
+					alertbox.setNeutralButton("Ok",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+								}
+							});
+					alertbox.show();
+				} else if ((!cities.contains(sa1.getText().toString()) && !sa1
+						.getText().toString().equals(""))
+						|| (!cities.contains(sa2.getText().toString()) && !sa2
+								.getText().toString().equals(""))
+						|| (!cities.contains(sa3.getText().toString()) && !sa3
+								.getText().toString().equals(""))
+						|| (!cities.contains(sa4.getText().toString()) && !sa4
+								.getText().toString().equals(""))
+						|| (!cities.contains(sa5.getText().toString()) && !sa5
+								.getText().toString().equals(""))) {
+					AlertDialog.Builder alertbox = new AlertDialog.Builder(atd);
+					alertbox.setMessage("Please choose a City Name sugessted.");
+					alertbox.setNeutralButton("Ok",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+								}
+							});
+					alertbox.show();
+				} else {
+					shouldAvoidCities = "";
+					if (!sa1.getText().toString().equals("")) {
+						shouldAvoidCities += sa1.getText().toString() + ";";
+					}
+					if (!sa2.getText().toString().equals("")) {
+						shouldAvoidCities += sa2.getText().toString() + ";";
+					}
+					if (!sa3.getText().toString().equals("")) {
+						shouldAvoidCities += sa3.getText().toString() + ";";
+					}
+					if (!sa4.getText().toString().equals("")) {
+						shouldAvoidCities += sa4.getText().toString() + ";";
+					}
+					if (!sa5.getText().toString().equals("")) {
+						shouldAvoidCities += sa5.getText().toString() + ";";
+					}
+
+					final Intent i = new Intent(
+							Add_travel_details_should_avoid.this,
+							Add_travel_details_observing.class);
+					Bundle bundle = params;
+					bundle.putString("Should_Avoid_Cities", shouldAvoidCities);
+					i.putExtras(bundle);
+					AlertDialog.Builder alertbox = new AlertDialog.Builder(atd);
+					String taC = shouldAvoidCities.replace(";", " ");
+					alertbox.setMessage("Your list of should avoid cities is "
+							+ taC + ".Proceed further ?");
+					alertbox.setNeutralButton("Ok",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+									startActivity(i);
+								}
+							});
+					alertbox.setNegativeButton("Cancel",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+								}
+							});
+					alertbox.show();
 				}
 
 			}

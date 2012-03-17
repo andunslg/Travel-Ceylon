@@ -53,12 +53,17 @@
         <activity
             android:name=".Add_travel_details_should_avoid"
             android:icon="@drawable/ico"
-            android:label="Add Travel Details_Select_Shoul_Avoid" >
+            android:label="Add Travel Details_Select_Should_Avoid" >
         </activity>
         <activity
             android:name=".Add_travel_details_should_visit"
             android:icon="@drawable/ico"
-            android:label="Add Travel Details_Select_Shoul_Visit" >
+            android:label="Add Travel Details_Select_Should_Visit" >
+        </activity>
+        <activity
+            android:name=".Add_travel_details_observing"
+            android:icon="@drawable/ico"
+            android:label="Add Travel Details_Select_Cities_Observe" >
         </activity>
         <activity
             android:name=".Show_Path_To_Place"
