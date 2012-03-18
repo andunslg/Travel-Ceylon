@@ -359,8 +359,6 @@ public class Show_Trip_Plan extends MapActivity {
 							PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
 							notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
-							notification.defaults |= Notification.DEFAULT_SOUND;
-							notification.defaults |= Notification.DEFAULT_VIBRATE;
 							notification.flags =Notification.FLAG_AUTO_CANCEL;
 							
 							int HELLO_ID = 100;							
