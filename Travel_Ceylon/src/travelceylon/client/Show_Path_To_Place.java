@@ -12,6 +12,7 @@ import route.*;
 import travelceylon.client.Show_Trip_Plan.MyOverlay;
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,7 +40,6 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
 public class Show_Path_To_Place extends MapActivity {
-
 	LinearLayout linearLayout;
 	MapView mapView;
 	private Road mRoad;
@@ -67,6 +67,8 @@ public class Show_Path_To_Place extends MapActivity {
 		mapView = (MapView) findViewById(R.id.mapviewShowPathToPlace);
 		mapView.setBuiltInZoomControls(true);
 		params = getIntent().getExtras();
+		
+		
 		new Thread() {
 			@Override
 			public void run() {

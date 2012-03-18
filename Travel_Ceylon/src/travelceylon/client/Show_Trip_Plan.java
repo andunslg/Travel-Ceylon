@@ -11,6 +11,9 @@ import java.util.List;
 import route.*;
 
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,6 +49,10 @@ public class Show_Trip_Plan extends MapActivity {
 	private Bundle params;
 	private boolean[] cityAlertShown;
 	private int currentCity;
+	private String ns;
+	private NotificationManager mNotificationManager;
+	private Context context;
+	private Intent notificationIntent;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,11 +67,7 @@ public class Show_Trip_Plan extends MapActivity {
 		params = getIntent().getExtras();
 		String tripPlan = params.getString("TripPlan");
 		String cities[] = tripPlan.split(";");
-
-		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
-				0, new GeoUpdateHandler());
-
+	
 		final Button buttonChagngeView = (Button) findViewById(R.id.buttonChagngeView);
 		buttonChagngeView.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
@@ -189,6 +192,15 @@ public class Show_Trip_Plan extends MapActivity {
 			}
 		}.start();
 		cityAlertShown=new boolean[cityArray.size()];
+		
+		ns = Context.NOTIFICATION_SERVICE;
+		context = getApplicationContext();
+		mNotificationManager = (NotificationManager) getSystemService(ns);
+		notificationIntent=getIntent();
+		
+		GeoUpdateHandler guh=new GeoUpdateHandler();
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 200,guh );
 	}
 
 	Handler mHandler = new Handler() {
@@ -334,6 +346,26 @@ public class Show_Trip_Plan extends MapActivity {
 							&& ((Double.parseDouble(temp.Longitude) - currentLng)) <= 0.0400) {
 						if (!cityAlertShown[i]) {
 							cityAlertShown[i]=true;
+
+							int icon = R.drawable.icon2;
+							CharSequence tickerText = "You are reaching a city";
+							long when = System.currentTimeMillis();
+
+							Notification notification = new Notification(icon, tickerText, when);
+							
+							CharSequence contentTitle = "You are reaching "+temp.City_Name;
+							CharSequence contentText = "Please check the map to see what are places in the trip plan";
+							notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_SINGLE_TOP);
+							PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+
+							notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+							notification.defaults |= Notification.DEFAULT_SOUND;
+							notification.defaults |= Notification.DEFAULT_VIBRATE;
+							notification.flags =Notification.FLAG_AUTO_CANCEL;
+							
+							int HELLO_ID = 100;							
+							mNotificationManager.notify(HELLO_ID, notification);
+							
 							AlertDialog.Builder dialog = new AlertDialog.Builder(
 									stp);
 							dialog.setTitle("Your are close to "
@@ -359,6 +391,7 @@ public class Show_Trip_Plan extends MapActivity {
 									});
 
 							dialog.show();
+							
 						}
 					}
 
