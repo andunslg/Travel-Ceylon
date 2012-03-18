@@ -7,9 +7,12 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import route.*;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -22,6 +25,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -67,7 +71,7 @@ public class Show_Trip_Plan extends MapActivity {
 		params = getIntent().getExtras();
 		String tripPlan = params.getString("TripPlan");
 		String cities[] = tripPlan.split(";");
-	
+
 		final Button buttonChagngeView = (Button) findViewById(R.id.buttonChagngeView);
 		buttonChagngeView.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
@@ -185,27 +189,31 @@ public class Show_Trip_Plan extends MapActivity {
 							tolon);
 					InputStream is = getConnection(url);
 					mRoad = RoadProvider.getRoute(is);
-					currentCity=i;
+					currentCity = i;
 					mHandler.sendEmptyMessage(0);
 				}
 
 			}
 		}.start();
-		cityAlertShown=new boolean[cityArray.size()];
-		
+		cityAlertShown = new boolean[cityArray.size()];
+
 		ns = Context.NOTIFICATION_SERVICE;
 		context = getApplicationContext();
 		mNotificationManager = (NotificationManager) getSystemService(ns);
-		notificationIntent=getIntent();
-		
-		GeoUpdateHandler guh=new GeoUpdateHandler();
+		notificationIntent = getIntent();
+
+		GeoUpdateHandler guh = new GeoUpdateHandler();
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 200,guh );
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+				200, guh);
 	}
 
 	Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			tripPathDes += "Follow this road to go to "+cityArray.get(currentCity+1).City_Name+" from "+cityArray.get(currentCity).City_Name+".\n "+mRoad.mName + " " + mRoad.mDescription + "\n\n";
+			tripPathDes += "Follow this road to go to "
+					+ cityArray.get(currentCity + 1).City_Name + " from "
+					+ cityArray.get(currentCity).City_Name + ".\n "
+					+ mRoad.mName + " " + mRoad.mDescription + "\n\n";
 			MapOverlay mapOverlay = new MapOverlay(mRoad, mapView);
 			List<Overlay> listOfOverlays = mapView.getOverlays();
 			listOfOverlays.add(mapOverlay);
@@ -345,31 +353,52 @@ public class Show_Trip_Plan extends MapActivity {
 					if (((Double.parseDouble(temp.Longitude) - currentLng) >= -0.0400)
 							&& ((Double.parseDouble(temp.Longitude) - currentLng)) <= 0.0400) {
 						if (!cityAlertShown[i]) {
-							cityAlertShown[i]=true;
+							cityAlertShown[i] = true;
+							boolean foreground = false;
 
-							int icon = R.drawable.icon2;
-							CharSequence tickerText = "You are reaching a city";
-							long when = System.currentTimeMillis();
+							try {
+								foreground = new ForegroundCheckTask().execute(
+										context).get();
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							} catch (ExecutionException e) {
+								e.printStackTrace();
+							}
 
-							Notification notification = new Notification(icon, tickerText, when);
-							
-							CharSequence contentTitle = "You are reaching "+temp.City_Name;
-							CharSequence contentText = "Please check the map to see what are places in the trip plan";
-							notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_SINGLE_TOP);
-							PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+							if (!foreground) {
+								int icon = R.drawable.icon;
+								CharSequence tickerText = "You are reaching a city";
+								long when = System.currentTimeMillis();
 
-							notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
-							notification.flags =Notification.FLAG_AUTO_CANCEL;
-							
-							int HELLO_ID = 100;							
-							mNotificationManager.notify(HELLO_ID, notification);
-							
+								Notification notification = new Notification(
+										icon, tickerText, when);
+
+								CharSequence contentTitle = "You are reaching "
+										+ temp.City_Name;
+								CharSequence contentText = "Please check the map to see what are places in the trip plan";
+								notificationIntent
+										.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+												| Intent.FLAG_ACTIVITY_SINGLE_TOP);
+								PendingIntent contentIntent = PendingIntent
+										.getActivity(context, 0,
+												notificationIntent, 0);
+
+								notification.setLatestEventInfo(context,
+										contentTitle, contentText,
+										contentIntent);
+								notification.flags = Notification.FLAG_AUTO_CANCEL;
+
+								int HELLO_ID = 100;
+								mNotificationManager.notify(HELLO_ID,
+										notification);
+							}
+
 							AlertDialog.Builder dialog = new AlertDialog.Builder(
 									stp);
 							dialog.setTitle("Your are close to "
 									+ temp.City_Name);
 							dialog.setMessage("Please check the map to see what are places in the trip plan");
-							dialog.setIcon(R.drawable.icon1);
+							dialog.setIcon(R.drawable.icon);
 							dialog.setNeutralButton("Ok",
 									new DialogInterface.OnClickListener() {
 										public void onClick(
@@ -389,7 +418,7 @@ public class Show_Trip_Plan extends MapActivity {
 									});
 
 							dialog.show();
-							
+
 						}
 					}
 
@@ -431,4 +460,32 @@ public class Show_Trip_Plan extends MapActivity {
 		public void onStatusChanged(String provider, int status, Bundle extras) {
 		}
 	}
+
+	class ForegroundCheckTask extends AsyncTask<Context, Void, Boolean> {
+
+		@Override
+		protected Boolean doInBackground(Context... params) {
+			final Context context = params[0].getApplicationContext();
+			return isAppOnForeground(context);
+		}
+
+		private boolean isAppOnForeground(Context context) {
+			ActivityManager activityManager = (ActivityManager) context
+					.getSystemService(Context.ACTIVITY_SERVICE);
+			List<RunningAppProcessInfo> appProcesses = activityManager
+					.getRunningAppProcesses();
+			if (appProcesses == null) {
+				return false;
+			}
+			final String packageName = context.getPackageName();
+			for (RunningAppProcessInfo appProcess : appProcesses) {
+				if (appProcess.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+						&& appProcess.processName.equals(packageName)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
 }
