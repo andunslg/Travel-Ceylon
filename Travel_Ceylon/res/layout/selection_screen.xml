@@ -8,22 +8,34 @@
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="47dp"
         android:src="@drawable/sl" />
 
     <Button
         android:id="@+id/buttonPlanATravel"
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Plan A Travel" />
 
     <Button
         android:id="@+id/buttonSubmitPlaceDetails"
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
         android:text="Submit Important Place Details" />
+
+    <Button
+        android:id="@+id/buttonShowCities"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="View Cities" />
+
+    <Button
+        android:id="@+id/buttonHelp"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Help" />
 
 </LinearLayout>

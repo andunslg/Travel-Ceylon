@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TableRow>
+
+            <TextView
+                android:layout_column="1"
+                android:text="" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/textViewI"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This will give you a step by step guide about Travel Ceylon v1.0 "
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:typeface="sans" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_column="1"
+                android:text="" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/textViewI"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_column="1"
+                android:text="•" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/textViewhp1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Following buttons in the Travel Ceylon Selection Screen will do these tasks," >
+            </TextView>
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_column="1"
+                android:text="" >
+            </TextView>
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:src="@drawable/h1" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_column="1"
+                android:text="•" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/textViewhp2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Plan a Travel will get you to plan a trip accroding to your liking." />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_column="1"
+                android:text="•" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/textViewhp3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Important Places will give you the chance to add a place in Sri Lanka. Whic you know but not in Travel Ceylon Databse. Those submited data will be added after approval." />
+        </TableRow>
+    </TableLayout>
+
+</ScrollView>

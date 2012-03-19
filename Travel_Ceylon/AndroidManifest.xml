@@ -19,9 +19,8 @@
             android:name=".Travel_Ceylon_Activity"
             android:icon="@drawable/ico"
             android:label="Travel Ceylon" >
-            <intent-filter>
+            <intent-filter android:icon="@drawable/ico" >
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -74,6 +73,16 @@
             android:name=".Show_Trip_Plan"
             android:icon="@drawable/ico"
             android:label="Show Trip Plan" >
+        </activity>
+        <activity
+            android:name=".Show_Cities"
+            android:icon="@drawable/ico"
+            android:label="Show All The Cities" >
+        </activity>
+        <activity
+            android:name=".Help"
+            android:icon="@drawable/ico"
+            android:label="Help" >
         </activity>
     </application>
 
