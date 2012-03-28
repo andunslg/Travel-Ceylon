@@ -17,11 +17,14 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 
+/**
+ * This class will get the cities user need to avoided from the trip plan. Those
+ * cities will not be available for the trip plan for sure Also User can get the
+ * trip plan at this moment
+ * 
+ * @author ASLG
+ */
 public class Add_travel_details_should_avoid extends Activity {
 	Add_travel_details_should_avoid atd;
 	ArrayList<String> cities;
@@ -41,14 +44,14 @@ public class Add_travel_details_should_avoid extends Activity {
 	Bundle params;
 
 	private String METHOD_NAME = "";
-	// our webservice method name
+	// Travel Ceylon webservice method name
 	private String NAMESPACE = "http://ws.travel_ceylon.web.org";
 	// Here package name in webservice with reverse order.
 	private String SOAP_ACTION = NAMESPACE + METHOD_NAME;
 	// NAMESPACE + method name
 	private static final String URL = "http://10.0.2.2:8080/Travel_Ceylon_Web_Service/services/Travel_Ceylon_Web_Service?wsdl";
 
-	// you must use ipaddress here, don’t use Hostname or localhost
+	// Location of the wsdl file
 
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
@@ -68,6 +71,10 @@ public class Add_travel_details_should_avoid extends Activity {
 		sa4 = (AutoCompleteTextView) findViewById(R.id.autocompleteSA4);
 		sa5 = (AutoCompleteTextView) findViewById(R.id.autocompleteSA5);
 
+		/*
+		 * This get the city list from the web service That list will be assign
+		 * as adapters to auto complete text views
+		 */
 		METHOD_NAME = "getCityList";
 		try {
 			SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
@@ -93,6 +100,10 @@ public class Add_travel_details_should_avoid extends Activity {
 			cities.remove(cities.indexOf(dCity));
 			String[] svCities = params.getString("Should_Visit_Cities").split(
 					";");
+			/*
+			 * This removes the start,dest and should ilculde cities form the
+			 * city list given for avoid cities
+			 */
 			for (String c : svCities) {
 				cities.remove(cities.indexOf(c));
 			}
@@ -117,10 +128,17 @@ public class Add_travel_details_should_avoid extends Activity {
 
 		}
 
+		/*
+		 * This button will request trip plan from the web service
+		 */
 		Button b = (Button) findViewById(R.id.ButtonSendTravelDetailsWithSVCandSAC);
 		b.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View arg0) {
+				/*
+				 * This if will check weather at least one city is added If not
+				 * it will show a message box
+				 */
 				if (sa1.getText().toString().equals("")
 						&& sa2.getText().toString().equals("")
 						&& sa3.getText().toString().equals("")
@@ -135,7 +153,12 @@ public class Add_travel_details_should_avoid extends Activity {
 								}
 							});
 					alertbox.show();
-				} else if ((!cities.contains(sa1.getText().toString()) && !sa1
+				}
+				/*
+				 * This if condition check weather user has given a input which
+				 * is not a suggested city from the application
+				 */
+				else if ((!cities.contains(sa1.getText().toString()) && !sa1
 						.getText().toString().equals(""))
 						|| (!cities.contains(sa2.getText().toString()) && !sa2
 								.getText().toString().equals(""))
@@ -154,8 +177,17 @@ public class Add_travel_details_should_avoid extends Activity {
 								}
 							});
 					alertbox.show();
-				} else {
+				}
+				/*
+				 * If all the inputs are according to the requirement they will
+				 * be sent to the web service
+				 */
+				else {
 					shouldAvoidCities = "";
+
+					/*
+					 * This if ladder get at least one city form the list of
+					 */
 					if (!sa1.getText().toString().equals("")) {
 						shouldAvoidCities += sa1.getText().toString() + ";";
 					}
@@ -172,6 +204,11 @@ public class Add_travel_details_should_avoid extends Activity {
 						shouldAvoidCities += sa5.getText().toString() + ";";
 					}
 
+					/*
+					 * This send the trip details to the web service to
+					 * processing The field not are applicable at this moment
+					 * are sent as ""
+					 */
 					METHOD_NAME = "planTheTrip";
 					try {
 						SoapObject request = new SoapObject(NAMESPACE,
@@ -192,6 +229,10 @@ public class Add_travel_details_should_avoid extends Activity {
 						androidHttpTransport.call(SOAP_ACTION, envelope);
 						Object result = envelope.getResponse();
 
+						/*
+						 * The generated trip plan from the web service is sent
+						 * to the map view activity
+						 */
 						Intent i = new Intent(
 								Add_travel_details_should_avoid.this,
 								Show_Trip_Plan.class);
@@ -210,12 +251,20 @@ public class Add_travel_details_should_avoid extends Activity {
 
 			}
 		});
-		
+
+		/*
+		 * This button will guide the user to select further more filters to the
+		 * trip plan
+		 */
 		Button b1 = (Button) findViewById(R.id.buttonGoToObserving);
 		b1.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View arg0) {
 
+				/*
+				 * This if ladder check at least one city is typed in the text
+				 * box If not a message box will be shown to complain
+				 */
 				if (sa1.getText().toString().equals("")
 						&& sa2.getText().toString().equals("")
 						&& sa3.getText().toString().equals("")
@@ -230,7 +279,12 @@ public class Add_travel_details_should_avoid extends Activity {
 								}
 							});
 					alertbox.show();
-				} else if ((!cities.contains(sa1.getText().toString()) && !sa1
+				}
+				/*
+				 * This will check weather the users has input some city name
+				 * which is not suggested by the app
+				 */
+				else if ((!cities.contains(sa1.getText().toString()) && !sa1
 						.getText().toString().equals(""))
 						|| (!cities.contains(sa2.getText().toString()) && !sa2
 								.getText().toString().equals(""))
@@ -249,7 +303,12 @@ public class Add_travel_details_should_avoid extends Activity {
 								}
 							});
 					alertbox.show();
-				} else {
+				}
+				/*
+				 * If all the inputs are in order the data are sent to the next
+				 * screen in a bundle object
+				 */
+				else {
 					shouldAvoidCities = "";
 					if (!sa1.getText().toString().equals("")) {
 						shouldAvoidCities += sa1.getText().toString() + ";";
@@ -273,6 +332,10 @@ public class Add_travel_details_should_avoid extends Activity {
 					Bundle bundle = params;
 					bundle.putString("Should_Avoid_Cities", shouldAvoidCities);
 					i.putExtras(bundle);
+					/*
+					 * This alert box is shown to verify the data which is sent
+					 * to the next screen
+					 */
 					AlertDialog.Builder alertbox = new AlertDialog.Builder(atd);
 					String taC = shouldAvoidCities.replace(";", " ");
 					alertbox.setMessage("Your list of should avoid cities is "

@@ -9,10 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import route.*;
-
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningAppProcessInfo;
+import route.MapOverlay;
+import route.Road;
+import route.RoadProvider;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -25,10 +24,8 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -40,6 +37,15 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
+/**
+ * This class will show the entire trip plan This will show all the
+ * cities,important places and roads on the trip plan Also the users location
+ * will be shown using a marker When user reaches a city he will be notified
+ * Under can click on markers to get details about those place
+ * 
+ * @author ASLG
+ * 
+ */
 public class Show_Trip_Plan extends MapActivity {
 	private Show_Trip_Plan stp;
 	private MapView mapView;
@@ -67,11 +73,17 @@ public class Show_Trip_Plan extends MapActivity {
 		streetview = true;
 		currentUpdated = false;
 		tripPathDes = "";
-
+		/*
+		 * Getting the trip plan form the bundle received
+		 */
 		params = getIntent().getExtras();
 		String tripPlan = params.getString("TripPlan");
 		String cities[] = tripPlan.split(";");
 
+		/*
+		 * This button will change the maps appearance to satellite view or road
+		 * view.
+		 */
 		final Button buttonChagngeView = (Button) findViewById(R.id.buttonChagngeView);
 		buttonChagngeView.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
@@ -91,6 +103,10 @@ public class Show_Trip_Plan extends MapActivity {
 			}
 		});
 
+		/*
+		 * This button will show the trip plan as a text It will show all the
+		 * roads to follow on the trip
+		 */
 		final Button buttonShowTripPathDes = (Button) findViewById(R.id.buttonShowTripPathDes);
 		buttonShowTripPathDes.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
@@ -113,6 +129,10 @@ public class Show_Trip_Plan extends MapActivity {
 		cityArray = new ArrayList<City>();
 		placeArray = new ArrayList<Important_Place>();
 
+		/*
+		 * This for loop add all the cities in the trip plan to the map for drwa
+		 * paths
+		 */
 		for (int i = 0; i < cities.length; i++) {
 			String city = cities[i];
 			String cityDetails[] = city.split(":");
@@ -154,6 +174,10 @@ public class Show_Trip_Plan extends MapActivity {
 							+ ". Longitude :" + cityArray.get(i).Longitude
 							+ ". Latitude :" + cityArray.get(i).Latitude);
 		}
+		/*
+		 * This for loop will add all the important places in the trip plan to
+		 * the map
+		 */
 		for (int i = 0; i < placeArray.size(); i++) {
 			Drawable marker = getResources().getDrawable(R.drawable.marker1);
 			int markerWidth = marker.getIntrinsicWidth();
@@ -177,6 +201,10 @@ public class Show_Trip_Plan extends MapActivity {
 		}
 		mapView.invalidate();
 
+		/*
+		 * This thread will draw path between each city pair using the given
+		 * library
+		 */
 		new Thread() {
 			@Override
 			public void run() {
@@ -195,6 +223,11 @@ public class Show_Trip_Plan extends MapActivity {
 
 			}
 		}.start();
+
+		/*
+		 * This code section will add a location listener to notify user about
+		 * cities based on their GPS location
+		 */
 		cityAlertShown = new boolean[cityArray.size()];
 
 		ns = Context.NOTIFICATION_SERVICE;
@@ -206,6 +239,7 @@ public class Show_Trip_Plan extends MapActivity {
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
 				200, guh);
+
 	}
 
 	Handler mHandler = new Handler() {
@@ -285,6 +319,7 @@ public class Show_Trip_Plan extends MapActivity {
 			AlertDialog.Builder dialog = new AlertDialog.Builder(context);
 			dialog.setTitle(item.getTitle());
 			dialog.setMessage(item.getSnippet());
+			// This will show a message box showing the details of the city
 			if (isCity) {
 				dialog.setIcon(R.drawable.icon1);
 				dialog.setNeutralButton("Ok",
@@ -293,7 +328,10 @@ public class Show_Trip_Plan extends MapActivity {
 							}
 						});
 
-			} else {
+			}
+			// This will show a message box showing the details of the important
+			// Place
+			else {
 				dialog.setIcon(R.drawable.icon2);
 				dialog.setNeutralButton("Show path",
 						new DialogInterface.OnClickListener() {
@@ -344,10 +382,19 @@ public class Show_Trip_Plan extends MapActivity {
 
 		@Override
 		public void onLocationChanged(Location location) {
+			/*
+			 * If the GPS location changed this method is called
+			 */
 			currentLat = location.getLatitude();
 			currentLng = location.getLongitude();
+
 			for (int i = 0; i < cityArray.size(); i++) {
 				final City temp = cityArray.get(i);
+
+				/*
+				 * This if check weather user is close to any city in the trip
+				 * plan
+				 */
 				if (((Double.parseDouble(temp.Latitude) - currentLat) >= -0.0400)
 						&& ((Double.parseDouble(temp.Latitude) - currentLat) <= 0.0400)) {
 					if (((Double.parseDouble(temp.Longitude) - currentLng) >= -0.0400)
@@ -364,7 +411,10 @@ public class Show_Trip_Plan extends MapActivity {
 							} catch (ExecutionException e) {
 								e.printStackTrace();
 							}
-
+							/*
+							 * If the application is minimized this will send a
+							 * notification to the notification bar
+							 */
 							if (!foreground) {
 								int icon = R.drawable.icon;
 								CharSequence tickerText = "You are reaching a city";
@@ -392,7 +442,10 @@ public class Show_Trip_Plan extends MapActivity {
 								mNotificationManager.notify(HELLO_ID,
 										notification);
 							}
-
+							/*
+							 * A message box will be shown saying what is the
+							 * city user is close
+							 */
 							AlertDialog.Builder dialog = new AlertDialog.Builder(
 									stp);
 							dialog.setTitle("Your are close to "
@@ -425,6 +478,10 @@ public class Show_Trip_Plan extends MapActivity {
 				}
 			}
 
+			/*
+			 * This code section will add a marker to the current location of
+			 * the user
+			 */
 			Drawable marker = getResources().getDrawable(R.drawable.marker2);
 			int markerWidth = marker.getIntrinsicWidth();
 			int markerHeight = marker.getIntrinsicHeight();
@@ -458,33 +515,6 @@ public class Show_Trip_Plan extends MapActivity {
 
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
-		}
-	}
-
-	class ForegroundCheckTask extends AsyncTask<Context, Void, Boolean> {
-
-		@Override
-		protected Boolean doInBackground(Context... params) {
-			final Context context = params[0].getApplicationContext();
-			return isAppOnForeground(context);
-		}
-
-		private boolean isAppOnForeground(Context context) {
-			ActivityManager activityManager = (ActivityManager) context
-					.getSystemService(Context.ACTIVITY_SERVICE);
-			List<RunningAppProcessInfo> appProcesses = activityManager
-					.getRunningAppProcesses();
-			if (appProcesses == null) {
-				return false;
-			}
-			final String packageName = context.getPackageName();
-			for (RunningAppProcessInfo appProcess : appProcesses) {
-				if (appProcess.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND
-						&& appProcess.processName.equals(packageName)) {
-					return true;
-				}
-			}
-			return false;
 		}
 	}
 

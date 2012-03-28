@@ -6,6 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * This is the main selection screen of the Travel Ceylon According to the users
+ * choice they will guided to different interfaces.
+ * 
+ * @author ASLG
+ * 
+ */
 public class Selection_Activity extends Activity {
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
@@ -38,8 +45,7 @@ public class Selection_Activity extends Activity {
 		Button b3 = (Button) findViewById(R.id.buttonHelp);
 		b3.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
-				Intent i = new Intent(Selection_Activity.this,
-						Help.class);
+				Intent i = new Intent(Selection_Activity.this, Help.class);
 				startActivity(i);
 			}
 		});

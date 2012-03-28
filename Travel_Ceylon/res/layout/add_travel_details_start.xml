@@ -56,9 +56,9 @@
             android:id="@+id/TextViewSpace"
             android:layout_width="match_parent"
             android:layout_height="10pt"
+            wrap_content=""
             android:text=""
-            android:textSize="8pt"
-            wrap_content="" >
+            android:textSize="8pt" >
         </TextView>
 
         <Button

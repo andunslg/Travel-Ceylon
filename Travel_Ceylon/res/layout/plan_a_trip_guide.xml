@@ -12,8 +12,6 @@
         android:text="Please fill the set of forms carefully, which appers next."
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    
-
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"

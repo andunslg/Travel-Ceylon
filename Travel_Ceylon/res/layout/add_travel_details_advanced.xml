@@ -21,9 +21,9 @@
             android:id="@+id/TextViewSpace2"
             android:layout_width="match_parent"
             android:layout_height="10pt"
+            wrap_content=""
             android:text=""
-            android:textSize="8pt"
-            wrap_content="" >
+            android:textSize="8pt" >
         </TextView>
 
         <TextView
@@ -90,9 +90,9 @@
             android:id="@+id/TextViewSpace3"
             android:layout_width="match_parent"
             android:layout_height="10pt"
+            wrap_content=""
             android:text=""
-            android:textSize="8pt"
-            wrap_content="" >
+            android:textSize="8pt" >
         </TextView>
 
         <Button
@@ -101,13 +101,12 @@
             android:layout_height="wrap_content"
             android:onClick="sendFeedback"
             android:text="Go To Select Cities Should Avoid" />
-
+
         <Button
             android:id="@+id/ButtonSendTavelDetailsWithSVC"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Send Travel Details" />
-       
     </LinearLayout>
 
 </ScrollView>

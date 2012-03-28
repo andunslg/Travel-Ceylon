@@ -1,14 +1,11 @@
 package travelceylon.client;
 
-
 import java.util.ArrayList;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
-
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -17,7 +14,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapActivity;
@@ -25,21 +21,29 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 
+/**
+ * This class is responsible for showing all the cites considered in the Travel
+ * Ceylon App All the cities will be marked using markers User can click on
+ * those markers to get the details of the city City Details are queried from
+ * the Travel Ceylon Web Service
+ * 
+ * @author ASLG
+ * 
+ */
 public class Show_Cities extends MapActivity {
 
-	private Show_Cities sc;
 	private MapView mapView;
 	private ArrayList<City> cityArray;
 
 	private String METHOD_NAME = "";
-	// our webservice method name
+	// Travel Ceylon webservice method name
 	private String NAMESPACE = "http://ws.travel_ceylon.web.org";
 	// Here package name in webservice with reverse order.
 	private String SOAP_ACTION = NAMESPACE + METHOD_NAME;
 	// NAMESPACE + method name
 	private static final String URL = "http://10.0.2.2:8080/Travel_Ceylon_Web_Service/services/Travel_Ceylon_Web_Service?wsdl";
 
-	// you must use ipaddress here, don’t use Hostname or localhost
+	// The location of the wsdl
 
 	@Override
 	protected boolean isRouteDisplayed() {
@@ -52,11 +56,12 @@ public class Show_Cities extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.show_cities);
 
-		sc = this;
-
 		mapView = (MapView) findViewById(R.id.mapviewShowCities);
 		mapView.setBuiltInZoomControls(true);
 
+		/*
+		 * Query the web service to get city list
+		 */
 		METHOD_NAME = "getCityList";
 		try {
 			SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
@@ -70,6 +75,10 @@ public class Show_Cities extends MapActivity {
 			String temp = result.toString();
 			String cityList[] = temp.split(";");
 
+			/*
+			 * This will query the longitude and latitude of each city from the
+			 * web service
+			 */
 			cityArray = new ArrayList<City>();
 			for (String c : cityList) {
 				String lngi = "";
@@ -109,6 +118,10 @@ public class Show_Cities extends MapActivity {
 
 		}
 
+		/*
+		 * This code section will add markers to the map. MArkers will contain
+		 * city details
+		 */
 		for (int i = 0; i < cityArray.size(); i++) {
 			Drawable marker = getResources().getDrawable(R.drawable.marker);
 			int markerWidth = marker.getIntrinsicWidth();
@@ -124,13 +137,20 @@ public class Show_Cities extends MapActivity {
 							+ ". Longitude :" + cityArray.get(i).Longitude
 							+ ". Latitude :" + cityArray.get(i).Latitude);
 		}
-	
-		MapController mc=mapView.getController();
+
+		MapController mc = mapView.getController();
 		mc.setZoom(10);
 		mapView.invalidate();
 
 	}
 
+	/**
+	 * This class is the map marker class It defines the actions taken when user
+	 * click on the marker object
+	 * 
+	 * @author ASLG
+	 * 
+	 */
 	class MyOverlay extends ItemizedOverlay<OverlayItem> {
 		Context context;
 		private ArrayList<OverlayItem> overlayItemList = new ArrayList<OverlayItem>();
@@ -164,6 +184,11 @@ public class Show_Cities extends MapActivity {
 
 		}
 
+		/**
+		 * This will show a message box showing the city details, when user
+		 * click on the marker object Message box will contain city
+		 * name,longitude and latitude
+		 */
 		@Override
 		protected boolean onTap(int index) {
 			OverlayItem item = overlayItemList.get(index);

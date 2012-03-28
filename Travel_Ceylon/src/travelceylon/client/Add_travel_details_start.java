@@ -12,36 +12,46 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 
+/**
+ * This class is the first UI of set UIs which gets the Trip Plan details from
+ * the user This class is responsible for get the Start Location and Destination
+ * Location and Trip Duration from user After getting the details those are
+ * passed to the next activity
+ * 
+ * @author ASLG
+ * 
+ */
 public class Add_travel_details_start extends Activity {
 	Add_travel_details_start atd;
 	Intent i;
 	ArrayList<String> cities;
 
 	private String METHOD_NAME = "";
-	// our webservice method name
+	// Travel Ceylon web service method name
 	private String NAMESPACE = "http://ws.travel_ceylon.web.org";
-	// Here package name in webservice with reverse order.
+	// Here package name in web service with reverse order.
 	private String SOAP_ACTION = NAMESPACE + METHOD_NAME;
 	// NAMESPACE + method name
 	private static final String URL = "http://10.0.2.2:8080/Travel_Ceylon_Web_Service/services/Travel_Ceylon_Web_Service?wsdl";
 
-	// you must use ipaddress here, don’t use Hostname or localhost
+	// Location of the wsdl
 
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.add_travel_details_start);
 		atd = this;
 
+		/*
+		 * This code section will get the City list from the web service Those
+		 * cities will be suggested when the user type city names in the text
+		 * fields
+		 */
 		METHOD_NAME = "getCityList";
 		try {
 			SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
@@ -54,12 +64,12 @@ public class Add_travel_details_start extends Activity {
 			Object result = envelope.getResponse();
 			String temp = result.toString();
 			String cityList[] = temp.split(";");
-			
+
 			cities = new ArrayList<String>();
 			for (String c : cityList) {
 				cities.add(c);
 			}
-			
+
 			AutoCompleteTextView textView1 = (AutoCompleteTextView) findViewById(R.id.autocomplete_StartingCity);
 			AutoCompleteTextView textView2 = (AutoCompleteTextView) findViewById(R.id.autocomplete_DestinationCity);
 			ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(this,
@@ -72,6 +82,10 @@ public class Add_travel_details_start extends Activity {
 
 		}
 
+		/*
+		 * When the user click this button it will show the selection of
+		 * interests screen
+		 */
 		Button b = (Button) findViewById(R.id.ButtonGoToSelectInterests);
 		b.setOnClickListener(new View.OnClickListener() {
 			AutoCompleteTextView sCity = (AutoCompleteTextView) findViewById(R.id.autocomplete_StartingCity);
@@ -83,6 +97,10 @@ public class Add_travel_details_start extends Activity {
 
 			public void onClick(View arg0) {
 
+				/*
+				 * This if condition check for invalid inputs or empty text
+				 * fields in the UI. If it found it will show a message box.
+				 */
 				if (sCity.getText().toString().equals("")
 						|| dCity.getText().toString().equals("")
 						|| du.getText().toString().equals("")) {
@@ -95,7 +113,14 @@ public class Add_travel_details_start extends Activity {
 								}
 							});
 					alertbox.show();
-				} else if (!cities.contains(sCity.getText().toString())||!cities.contains(dCity.getText().toString())) {
+				}
+				/*
+				 * This if condition check weather user has input a city name
+				 * which was not suggested by the Travel Ceylon. If it is it
+				 * will show a error message
+				 */
+				else if (!cities.contains(sCity.getText().toString())
+						|| !cities.contains(dCity.getText().toString())) {
 					AlertDialog.Builder alertbox = new AlertDialog.Builder(atd);
 					alertbox.setMessage("Please choose a City Name sugessted.");
 					alertbox.setNeutralButton("Ok",
@@ -106,7 +131,10 @@ public class Add_travel_details_start extends Activity {
 							});
 					alertbox.show();
 				}
-
+				/*
+				 * If user has input all the valid inputs then this if condition
+				 * will send those data to the select interest Activity
+				 */
 				else {
 					startCity = sCity.getText().toString();
 					destCity = dCity.getText().toString();
@@ -119,6 +147,11 @@ public class Add_travel_details_start extends Activity {
 					bundle.putString("Dest_City", destCity);
 					bundle.putString("Due", duration);
 					i.putExtras(bundle);
+
+					/*
+					 * This message box is shown to verify the city data which
+					 * was send to the next dialog
+					 */
 					AlertDialog.Builder alertbox = new AlertDialog.Builder(atd);
 					alertbox.setMessage("You have selected " + startCity
 							+ " as your starting city and " + destCity

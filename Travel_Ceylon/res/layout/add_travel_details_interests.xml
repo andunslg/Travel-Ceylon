@@ -16,9 +16,9 @@
         android:id="@+id/TextViewSpace"
         android:layout_width="match_parent"
         android:layout_height="10pt"
+        wrap_content=""
         android:text=""
-        android:textSize="8pt"
-        wrap_content="" >
+        android:textSize="8pt" >
     </TextView>
 
     <LinearLayout
@@ -110,20 +110,23 @@
                 android:text="CheckBox10" />
         </LinearLayout>
     </LinearLayout>
-<TextView
+
+    <TextView
         android:id="@+id/TextViewSpace1"
         android:layout_width="match_parent"
         android:layout_height="10pt"
+        wrap_content=""
         android:text=""
-        android:textSize="8pt"
-        wrap_content="" >
+        android:textSize="8pt" >
     </TextView>
+
     <Button
         android:id="@+id/ButtonGoToAdvancedOptions"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:onClick="sendFeedback"
         android:text="Go To Advanced Options" />
+
     <Button
         android:id="@+id/ButtonSendTravelDetails"
         android:layout_width="fill_parent"

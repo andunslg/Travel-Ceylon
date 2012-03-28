@@ -18,8 +18,15 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
-public class Add_travel_details_observing extends Activity
-{
+/**
+ * This class get a list of cities from the user which are marked as observing
+ * cities. Those cities will be only considered to be observing cities that
+ * means only on those cites user will stop for see places.
+ * 
+ * @author ASLG
+ * 
+ */
+public class Add_travel_details_observing extends Activity {
 	Add_travel_details_observing atd;
 	ArrayList<String> cities;
 
@@ -39,14 +46,14 @@ public class Add_travel_details_observing extends Activity
 	Bundle params;
 
 	private String METHOD_NAME = "";
-	// our webservice method name
+	// Travel web service method name
 	private String NAMESPACE = "http://ws.travel_ceylon.web.org";
-	// Here package name in webservice with reverse order.
+	// Here package name in web service with reverse order.
 	private String SOAP_ACTION = NAMESPACE + METHOD_NAME;
 	// NAMESPACE + method name
 	private static final String URL = "http://10.0.2.2:8080/Travel_Ceylon_Web_Service/services/Travel_Ceylon_Web_Service?wsdl";
 
-	// you must use ipaddress here, don’t use Hostname or localhost
+	// Location of the wsdl file
 
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
@@ -61,13 +68,16 @@ public class Add_travel_details_observing extends Activity
 		shouldVisitCities = params.getString("Should_Visit_Cities");
 		shouldAvoidCities = params.getString("Should_Avoid_Cities");
 
-
 		oa1 = (AutoCompleteTextView) findViewById(R.id.autocompleteOC1);
 		oa2 = (AutoCompleteTextView) findViewById(R.id.autocompleteOC2);
 		oa3 = (AutoCompleteTextView) findViewById(R.id.autocompleteOC3);
 		oa4 = (AutoCompleteTextView) findViewById(R.id.autocompleteOC4);
 		oa5 = (AutoCompleteTextView) findViewById(R.id.autocompleteOC5);
 
+		/*
+		 * This get the city list from the web service That list will be assign
+		 * as adapters to auto complete text views
+		 */
 		METHOD_NAME = "getCityList";
 		try {
 			SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
@@ -86,6 +96,11 @@ public class Add_travel_details_observing extends Activity
 				cities.add(c);
 			}
 
+			/*
+			 * The cities which are marked as avoiding cities are removed form
+			 * the city list which will be suggested in the auto complete text
+			 * boxes
+			 */
 			String[] saCities = params.getString("Should_Avoid_Cities").split(
 					";");
 			for (String c : saCities) {
@@ -111,10 +126,18 @@ public class Add_travel_details_observing extends Activity
 
 		}
 
+		/*
+		 * This button will request trip plan from the web service
+		 */
 		Button b = (Button) findViewById(R.id.ButtonSendTavelDetailsWithOC);
 		b.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View arg0) {
+
+				/*
+				 * This if will check weather at least one city is added If not
+				 * it will show a message box
+				 */
 				if (oa1.getText().toString().equals("")
 						&& oa2.getText().toString().equals("")
 						&& oa3.getText().toString().equals("")
@@ -129,7 +152,12 @@ public class Add_travel_details_observing extends Activity
 								}
 							});
 					alertbox.show();
-				} else if ((!cities.contains(oa1.getText().toString()) && !oa1
+				}
+				/*
+				 * This if condition check weather user has given a input which
+				 * is not a suggested city from the application
+				 */
+				else if ((!cities.contains(oa1.getText().toString()) && !oa1
 						.getText().toString().equals(""))
 						|| (!cities.contains(oa2.getText().toString()) && !oa2
 								.getText().toString().equals(""))
@@ -148,7 +176,12 @@ public class Add_travel_details_observing extends Activity
 								}
 							});
 					alertbox.show();
-				} else {
+				}
+				/*
+				 * If all the inputs are according to the requirement they will
+				 * be sent to the web service
+				 */
+				else {
 					observingCities = "";
 					if (!oa1.getText().toString().equals("")) {
 						observingCities += oa1.getText().toString() + ";";
@@ -166,6 +199,11 @@ public class Add_travel_details_observing extends Activity
 						observingCities += oa5.getText().toString() + ";";
 					}
 
+					/*
+					 * This send the trip details to the web service to
+					 * processing The field not are applicable at this moment
+					 * are sent as ""
+					 */
 					METHOD_NAME = "planTheTrip";
 					try {
 						SoapObject request = new SoapObject(NAMESPACE,
@@ -186,6 +224,10 @@ public class Add_travel_details_observing extends Activity
 						androidHttpTransport.call(SOAP_ACTION, envelope);
 						Object result = envelope.getResponse();
 
+						/*
+						 * This alert box is shown to verify the data which is
+						 * sent to the next screen
+						 */
 						Intent i = new Intent(
 								Add_travel_details_observing.this,
 								Show_Trip_Plan.class);

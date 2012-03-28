@@ -15,7 +15,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 
-
+/**
+ * This class will get the user's interests on the trip The starting city and
+ * dest city and interest is enough to get a travel plan So in this activity
+ * user can request a travel plan Also if the user want to add some more filters
+ * to the trip he can go further to add them If user go forward all the data is
+ * send forward as a bundle
+ * 
+ * @author ASLG
+ * 
+ */
 public class Add_travel_details_interest extends Activity {
 	Add_travel_details_interest atd;
 
@@ -40,14 +49,14 @@ public class Add_travel_details_interest extends Activity {
 	CheckBox advOption;
 
 	private String METHOD_NAME = "";
-	// our webservice method name
+	// Travel Ceylon web service method name
 	private String NAMESPACE = "http://ws.travel_ceylon.web.org";
-	// Here package name in webservice with reverse order.
+	// Here package name in web service with reverse order.
 	private String SOAP_ACTION = NAMESPACE + METHOD_NAME;
 	// NAMESPACE + method name
 	private static final String URL = "http://10.0.2.2:8080/Travel_Ceylon_Web_Service/services/Travel_Ceylon_Web_Service?wsdl";
 
-	// you must use ipaddress here, don’t use Hostname or localhost
+	// Location for the wsdl file
 
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
@@ -58,6 +67,13 @@ public class Add_travel_details_interest extends Activity {
 		destCity = params.getString("Dest_City");
 		duration = params.getString("Due");
 
+		/*
+		 * The list of interest is dynamic So the check boxes shown are also
+		 * dynamic So the mechanism implemented is showing predefined number of
+		 * check boxes and hide the extra ones So here ten check boxes are shown
+		 * and after getting the list of interests from the web services
+		 * remaining check boxes will be hide
+		 */
 		cb1 = (CheckBox) findViewById(R.id.checkBox1);
 		cb1.setVisibility(View.INVISIBLE);
 		cb2 = (CheckBox) findViewById(R.id.checkBox2);
@@ -79,6 +95,10 @@ public class Add_travel_details_interest extends Activity {
 		cb10 = (CheckBox) findViewById(R.id.checkBox10);
 		cb10.setVisibility(View.INVISIBLE);
 
+		/*
+		 * This web service call will get the interest category list from the
+		 * web service
+		 */
 		METHOD_NAME = "getCategories";
 		try {
 			SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
@@ -93,7 +113,11 @@ public class Add_travel_details_interest extends Activity {
 			Log.d("Categories", categories);
 			String categoriesList[] = categories.split(";");
 			catCount = categoriesList.length;
-			Log.d("Cat Caount", Integer.toString(catCount));
+
+			/*
+			 * This if ladder will show needed number of check boxes according
+			 * to the interest list from the web service
+			 */
 			if (catCount >= 1) {
 				cb1.setText(categoriesList[0]);
 				cb1.setVisibility(View.VISIBLE);
@@ -147,10 +171,19 @@ public class Add_travel_details_interest extends Activity {
 			E.printStackTrace();
 
 		}
+
+		/*
+		 * This button will guide user to the next screen which shows advanced
+		 * options
+		 */
 		Button b1 = (Button) findViewById(R.id.ButtonGoToAdvancedOptions);
 		b1.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View arg0) {
+				/*
+				 * This if will check weather at least one interest is selected
+				 * If not it will show a message box
+				 */
 				if ((!cb1.isChecked() && !cb2.isChecked() && !cb3.isChecked()
 						&& !cb4.isChecked() && !cb5.isChecked()
 						&& !cb6.isChecked() && !cb7.isChecked()
@@ -165,8 +198,13 @@ public class Add_travel_details_interest extends Activity {
 								}
 							});
 					alertbox.show();
-				} else {
-					interests="";
+				}
+				/*
+				 * If at least one interest is selected then the data is sent to
+				 * the nest screen in a Bundle
+				 */
+				else {
+					interests = "";
 					if (catCount >= 1) {
 						if (cb1.isChecked()) {
 							interests += cb1.getText() + ";";
@@ -225,14 +263,21 @@ public class Add_travel_details_interest extends Activity {
 							interests += cb10.getText() + ";";
 						}
 					}
-					final Intent i = new Intent(Add_travel_details_interest.this,
+					final Intent i = new Intent(
+							Add_travel_details_interest.this,
 							Add_travel_details_should_visit.class);
 					Bundle bundle = params;
-					bundle.putString("Interests",interests);
+					bundle.putString("Interests", interests);
 					i.putExtras(bundle);
+
+					/*
+					 * This Message box is shown to verify the sent data by the
+					 * user
+					 */
 					AlertDialog.Builder alertbox = new AlertDialog.Builder(atd);
-					String tInt=interests.replace(";", " ");
-					alertbox.setMessage("Your list of interest is "+tInt+".Proceed further ?");
+					String tInt = interests.replace(";", " ");
+					alertbox.setMessage("Your list of interest is " + tInt
+							+ ".Proceed further ?");
 					alertbox.setNeutralButton("Ok",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface arg0,
@@ -243,7 +288,8 @@ public class Add_travel_details_interest extends Activity {
 					alertbox.setNegativeButton("Cancel",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface arg0,
-										int arg1) {						}
+										int arg1) {
+								}
 							});
 					alertbox.show();
 
@@ -251,12 +297,19 @@ public class Add_travel_details_interest extends Activity {
 
 			}
 		});
-		
+
+		/*
+		 * This button will send data to the web service to get trip plans After
+		 * getting the trip plan user will be guided to the map
+		 */
 		Button b = (Button) findViewById(R.id.ButtonSendTravelDetails);
 		b.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View arg0) {
-
+				/*
+				 * This if will check weather at least one interest is selected
+				 * If not it will show a message box
+				 */
 				if ((!cb1.isChecked() && !cb2.isChecked() && !cb3.isChecked()
 						&& !cb4.isChecked() && !cb5.isChecked()
 						&& !cb6.isChecked() && !cb7.isChecked()
@@ -271,7 +324,12 @@ public class Add_travel_details_interest extends Activity {
 								}
 							});
 					alertbox.show();
-				} else {
+				}
+				/*
+				 * If at least one interest is selected then the data is sent to
+				 * the web service for get the trip plan
+				 */
+				else {
 					if (catCount >= 1) {
 						if (cb1.isChecked()) {
 							interests += cb1.getText() + ";";
@@ -331,6 +389,13 @@ public class Add_travel_details_interest extends Activity {
 						}
 					}
 
+					/*
+					 * This is the web service call for get the trip plan All
+					 * the requested properties are added to the SOAP object The
+					 * properties which are not applicable on this point will be
+					 * sent as "" strings. Those will be manupilated at the wqeb
+					 * service
+					 */
 					METHOD_NAME = "planTheTrip";
 					try {
 						SoapObject request = new SoapObject(NAMESPACE,
@@ -351,8 +416,11 @@ public class Add_travel_details_interest extends Activity {
 						androidHttpTransport.call(SOAP_ACTION, envelope);
 						Object result = envelope.getResponse();
 
-						Intent i = new Intent(
-								Add_travel_details_interest.this,
+						/*
+						 * When the web service sends the trip plan it is passed
+						 * to the trip plan showing UI
+						 */
+						Intent i = new Intent(Add_travel_details_interest.this,
 								Show_Trip_Plan.class);
 						Bundle bundle = new Bundle();
 						bundle.putString("TripPlan", result.toString());

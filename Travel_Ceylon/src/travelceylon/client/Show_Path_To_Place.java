@@ -8,25 +8,17 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import route.*;
-import travelceylon.client.Show_Trip_Plan.MyOverlay;
-
+import route.MapOverlay;
+import route.Road;
+import route.RoadProvider;
 import android.app.AlertDialog;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Bitmap.Config;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,18 +26,27 @@ import android.widget.TextView;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
+/**
+ * This class will show the path to a Important place form its near by city.
+ * User can click on the markers shown to view the details of the city and important place
+ * @author ASLG
+ *
+ */
 public class Show_Path_To_Place extends MapActivity {
 	LinearLayout linearLayout;
 	MapView mapView;
 	private Road mRoad;
 	Show_Path_To_Place spt;
 	Bundle params ;
-
+	
+	/**
+	 * This method defines what will happen if we press the back key
+	 * Here I sent the trip paln again to the shiow trip path intent
+	 */
 	public boolean onKeyDown(int keyCode, KeyEvent event){
 	    if(keyCode == KeyEvent.KEYCODE_BACK) {
 	            Intent i = new Intent(this, Show_Trip_Plan.class);   
@@ -68,7 +69,9 @@ public class Show_Path_To_Place extends MapActivity {
 		mapView.setBuiltInZoomControls(true);
 		params = getIntent().getExtras();
 		
-		
+		/*
+		 * This thread responsible for draw the path
+		 */
 		new Thread() {
 			@Override
 			public void run() {
@@ -79,13 +82,19 @@ public class Show_Path_To_Place extends MapActivity {
 						.parseDouble(params.getString("fromLng"));
 				double tolat = Double.parseDouble(params.getString("toLat"));
 				double tolon = Double.parseDouble(params.getString("toLng"));
-
+				
+				/*
+				 * Two Geo Point are created using City and the Important Place
+				 */
 				GeoPoint city = new GeoPoint((int) (fromlat * 1E6),
 						(int) (fromlon * 1E6));
 
 				GeoPoint place = new GeoPoint((int) (tolat * 1E6),
 						(int) (tolon * 1E6));
 
+				/*
+				 * Tow map markers are created for the city and the Important Place
+				 */
 				Drawable marker = getResources().getDrawable(R.drawable.marker);
 				int markerWidth = marker.getIntrinsicWidth();
 				int markerHeight = marker.getIntrinsicHeight();
@@ -134,7 +143,6 @@ public class Show_Path_To_Place extends MapActivity {
 			textView.setText(mRoad.mName + " " + mRoad.mDescription);
 			MapOverlay mapOverlay = new MapOverlay(mRoad, mapView);
 			List<Overlay> listOfOverlays = mapView.getOverlays();
-			// listOfOverlays.clear();
 			listOfOverlays.add(mapOverlay);
 			mapView.getController().setZoom(12);
 			mapView.invalidate();
